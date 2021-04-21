@@ -21,7 +21,7 @@ namespace ObjectPatcher.Tests
 				FirstProperty = (string[])FirstProperty.Clone(),
 				SecondProperty = SecondProperty,
 				ThirdProperty = ThirdProperty,
-				//FourthProperty = FourthProperty.Select(item=> (OtherTestObject)item.Clone()).ToList()
+				FourthProperty = FourthProperty.Select(item=> (OtherTestObject)item.Clone()).ToList()
 			};
 		}
 	}
