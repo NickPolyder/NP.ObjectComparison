@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ObjectPatcher.Tests
+namespace ObjectPatcher.Tests.Mocks
 {
 	public class TestObject : ICloneable
 	{

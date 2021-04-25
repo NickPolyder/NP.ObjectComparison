@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ObjectPatcher.Tests
+namespace ObjectPatcher.Tests.Mocks
 {
 	public class TestObjectWithArrays : ICloneable
 	{

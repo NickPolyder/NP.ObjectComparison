@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AutoFixture;
+using ObjectPatcher.Tests.Mocks;
 using Shouldly;
 using Xunit;
 
@@ -7,7 +8,7 @@ namespace ObjectPatcher.Tests
 {
 	public class PatchCompositeTests
 	{
-	
+
 		private IFixture _fixture;
 		public PatchCompositeTests()
 		{
