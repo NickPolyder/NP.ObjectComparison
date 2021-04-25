@@ -1,4 +1,7 @@
-﻿namespace ObjectPatcher
+﻿using System.Collections.Generic;
+using ObjectPatcher.Results;
+
+namespace ObjectPatcher
 {
 	public class PatchComposite<TInstance> : IPatchInfo<TInstance>
 	{
@@ -9,15 +12,15 @@
 			_patchInfos = patchInfos;
 		}
 
-		public bool Patch(TInstance originalInstance, TInstance targetInstance)
+		public IEnumerable<PatchItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
-			var hasChanged = false;
 			foreach (var patchInfo in _patchInfos)
 			{
-				hasChanged = patchInfo.Patch(originalInstance, targetInstance);
+				foreach (var patchItem in patchInfo.Patch(originalInstance, targetInstance))
+				{
+					yield return patchItem;
+				}
 			}
-
-			return hasChanged;
 		}
 	}
 }

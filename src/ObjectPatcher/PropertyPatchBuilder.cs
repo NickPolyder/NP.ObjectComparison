@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace ObjectPatcher
 {
@@ -38,6 +37,7 @@ namespace ObjectPatcher
 
 				yield return (IPatchInfo<TInstance>)propertyPatchType.Invoke(new object[]
 				{
+					new Func<string>(() => publicProperty.Name),
 					getterFunc,
 					setterFunc
 				});

@@ -1,17 +1,21 @@
 ﻿using System.Linq;
 using AutoFixture;
+using ObjectPatcher.Results;
 using ObjectPatcher.Tests.Mocks;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ObjectPatcher.Tests
 {
 	public class PatchCompositeTests
 	{
+		private readonly ITestOutputHelper _testOutputHelper;
 
 		private IFixture _fixture;
-		public PatchCompositeTests()
+		public PatchCompositeTests(ITestOutputHelper testOutputHelper)
 		{
+			_testOutputHelper = testOutputHelper;
 			_fixture = new Fixture();
 		}
 
@@ -29,7 +33,7 @@ namespace ObjectPatcher.Tests
 			var result = sut.Patch(originalValue, targetValue);
 
 			// Assert
-			result.ShouldBeTrue();
+			result.HasChanges().ShouldBeTrue();
 		}
 
 		[Fact]
@@ -44,7 +48,7 @@ namespace ObjectPatcher.Tests
 			var result = sut.Patch(originalValue, originalValue);
 
 			// Assert
-			result.ShouldBeFalse();
+			result.HasChanges().ShouldBeFalse();
 		}
 
 		[Fact]
@@ -60,7 +64,7 @@ namespace ObjectPatcher.Tests
 			var result = sut.Patch(originalValue, targetValue);
 
 			// Assert
-			result.ShouldBeFalse();
+			result.HasChanges().ShouldBeFalse();
 		}
 
 		[Fact]
@@ -73,10 +77,14 @@ namespace ObjectPatcher.Tests
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue);
+			var result = sut.Patch(originalValue, targetValue).ToList();
 
 			// Assert
-			result.ShouldBeFalse();
+			foreach (var patchItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+			}
+			result.HasChanges().ShouldBeFalse();
 		}
 	}
 }

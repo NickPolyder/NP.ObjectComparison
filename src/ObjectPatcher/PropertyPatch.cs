@@ -1,36 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
+using ObjectPatcher.Results;
 
 namespace ObjectPatcher
 {
 	public class PropertyPatch<TInstance, TObject> : IPatchInfo<TInstance>
 	{
+		private readonly Func<string> _getNameFunction;
 		private readonly Func<TInstance, TObject> _getterFunction;
 		private readonly Action<TInstance, TObject> _setterAction;
 		private readonly EqualsPredicate<TObject> _equalsPredicate;
 
-		public PropertyPatch(Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction)
-		: this(getterFunction, setterAction, (origin, target) => origin.Equals(target))
+		public PropertyPatch(Func<string> getNameFunction, Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction)
+		: this(getNameFunction, getterFunction, setterAction, (origin, target) => origin.Equals(target))
 		{ }
 
-		public PropertyPatch(Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction, EqualsPredicate<TObject> equalsPredicate)
+		public PropertyPatch(Func<string> getNameFunction, Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction, EqualsPredicate<TObject> equalsPredicate)
 		{
+			_getNameFunction = getNameFunction ?? throw new ArgumentNullException(nameof(getNameFunction));
 			_getterFunction = getterFunction ?? throw new ArgumentNullException(nameof(getterFunction));
 			_setterAction = setterAction ?? throw new ArgumentNullException(nameof(setterAction));
 			_equalsPredicate = equalsPredicate ?? throw new ArgumentNullException(nameof(equalsPredicate));
 		}
 
-		public bool Patch(TInstance originalInstance, TInstance targetInstance)
+		public IEnumerable<PatchItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
+
 			var originalValue = Get(originalInstance);
 			var newValue = Get(targetInstance);
-			if (IsEqual(originalValue, newValue))
+			var patchInfoBuilder = new PatchItem.Builder()
+				.SetName(GetName())
+				.SetOriginalValue(originalValue);
+
+			if (!IsEqual(originalValue, newValue))
 			{
-				return false;
+				Set(originalInstance, newValue);
+				patchInfoBuilder
+					.SetNewValue(newValue)
+					.HasChanges();
 			}
 
-			Set(originalInstance, newValue);
+			return new[] { patchInfoBuilder.Build() };
+		}
 
-			return true;
+		private string GetName()
+		{
+			return _getNameFunction();
 		}
 
 		private TObject Get(TInstance instance)

@@ -1,24 +1,34 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using Shouldly;
 using Xunit;
-using Xunit.Sdk;
 
 namespace ObjectPatcher.Tests
 {
 	public class PropertyPatchTests
 	{
+
+		[Fact]
+		public void Ctor_WhenGetNameFunctionIsNull_ThrowArgumentNullException()
+		{
+			// Arrange
+
+			// Act
+			var result = Record.Exception(() => new PropertyPatch<object, object>(null, _ => null, (instance, value) => { }));
+			// Assert
+			result.ShouldBeOfType<ArgumentNullException>()
+				.ParamName.ShouldBe("getNameFunction");
+		}
+
 		[Fact]
 		public void Ctor_WhenGetterFunctionIsNull_ThrowArgumentNullException()
 		{
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(null, (instance, value) => { }));
+			var result = Record.Exception(() => new PropertyPatch<object, object>(() => "", null, (instance, value) => { }));
 			// Assert
-			var ex = result.ShouldBeOfType<ArgumentNullException>();
-			ex.ParamName.ShouldBe("getterFunction");
+			result.ShouldBeOfType<ArgumentNullException>()
+				.ParamName.ShouldBe("getterFunction");
 		}
 
 		[Fact]
@@ -27,10 +37,10 @@ namespace ObjectPatcher.Tests
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(_ => null, null));
+			var result = Record.Exception(() => new PropertyPatch<object, object>(() => "", _ => null, null));
 			// Assert
-			var ex = result.ShouldBeOfType<ArgumentNullException>();
-			ex.ParamName.ShouldBe("setterAction");
+			result.ShouldBeOfType<ArgumentNullException>()
+				.ParamName.ShouldBe("setterAction");
 		}
 
 		[Fact]
@@ -39,12 +49,12 @@ namespace ObjectPatcher.Tests
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(_ => null,
+			var result = Record.Exception(() => new PropertyPatch<object, object>(() => "", _ => null,
 				(instance, value) => { },
 				null));
 			// Assert
-			var ex = result.ShouldBeOfType<ArgumentNullException>();
-			ex.ParamName.ShouldBe("equalsPredicate");
+			result.ShouldBeOfType<ArgumentNullException>()
+				.ParamName.ShouldBe("equalsPredicate");
 		}
 	}
 }

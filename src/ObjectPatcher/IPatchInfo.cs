@@ -1,7 +1,10 @@
-﻿namespace ObjectPatcher
+﻿using System.Collections.Generic;
+using ObjectPatcher.Results;
+
+namespace ObjectPatcher
 {
 	public interface IPatchInfo<in TInstance>
 	{
-		bool Patch(TInstance originalInstance, TInstance targetInstance);
+		IEnumerable<PatchItem> Patch(TInstance originalInstance, TInstance targetInstance);
 	}
 }
