@@ -12,7 +12,7 @@ namespace ObjectPatcher
 			_patchInfos = patchInfos;
 		}
 
-		public IEnumerable<PatchItem> Patch(TInstance originalInstance, TInstance targetInstance)
+		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
 			foreach (var patchInfo in _patchInfos)
 			{

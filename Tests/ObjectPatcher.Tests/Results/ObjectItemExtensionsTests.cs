@@ -8,11 +8,11 @@ using Xunit;
 
 namespace ObjectPatcher.Tests.Results
 {
-	public class PatchItemExtensionsTests
+	public class ObjectItemExtensionsTests
 	{
 		private IFixture _fixture;
 
-		public PatchItemExtensionsTests()
+		public ObjectItemExtensionsTests()
 		{
 			_fixture = new Fixture();
 		}
@@ -21,7 +21,7 @@ namespace ObjectPatcher.Tests.Results
 		public void HasChanges_WhenEnumerableIsNull_ShouldReturnFalse()
 		{
 			// Arrange
-			List<PatchItem> sut = null;
+			List<ObjectItem> sut = null;
 
 			// Act
 			var result = sut.HasChanges();
@@ -34,10 +34,10 @@ namespace ObjectPatcher.Tests.Results
 		public void HasChanges_WhenItHasNone_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new List<PatchItem>();
+			var sut = new List<ObjectItem>();
 			foreach (var i in Enumerable.Range(0, 10))
 			{
-				var builder = new PatchItem.Builder()
+				var builder = new ObjectItem.Builder()
 					.SetName(_fixture.Create<string>());
 
 				sut.Add(builder.Build());
@@ -54,15 +54,15 @@ namespace ObjectPatcher.Tests.Results
 		public void HasChanges_WhenItHasAtLeastOne_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new List<PatchItem>();
+			var sut = new List<ObjectItem>();
 			foreach (var i in Enumerable.Range(0,10))
 			{
-				var builder = new PatchItem.Builder()
+				var builder = new ObjectItem.Builder()
 					.SetName(_fixture.Create<string>());
 				
 				sut.Add(builder.Build());
 			}
-			var anotherBuilder = new PatchItem.Builder()
+			var anotherBuilder = new ObjectItem.Builder()
 				.SetName(_fixture.Create<string>())
 				.HasChanges();
 

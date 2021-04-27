@@ -2,7 +2,7 @@
 
 namespace ObjectPatcher.Results
 {
-	public class PatchItem
+	public class ObjectItem
 	{
 		public string Name { get; }
 
@@ -12,13 +12,14 @@ namespace ObjectPatcher.Results
 
 		public object NewValue { get; }
 
-		private PatchItem(string name, object originalValue, object newValue, bool hasChanges)
+		private ObjectItem(string name, object originalValue, object newValue, bool hasChanges)
 		{
 			Name = name;
 			OriginalValue = originalValue;
 			NewValue = newValue;
 			HasChanges = hasChanges;
 		}
+
 		public class Builder
 		{
 			private string _name;
@@ -50,17 +51,15 @@ namespace ObjectPatcher.Results
 				return this;
 			}
 
-			public PatchItem Build()
+			public ObjectItem Build()
 			{
 				if (string.IsNullOrWhiteSpace(_name))
 				{
 					throw new ArgumentNullException(nameof(_name));
 				}
 
-				return new PatchItem(_name, _originalValue, _newValue, _hasChanges);
+				return new ObjectItem(_name, _originalValue, _newValue, _hasChanges);
 			}
 		}
 	}
-
-
 }

@@ -8,12 +8,12 @@ using Xunit.Abstractions;
 
 namespace ObjectPatcher.Tests
 {
-	public class PatchCompositeTests
+	public class DiffCompositeTests
 	{
 		private readonly ITestOutputHelper _testOutputHelper;
 
 		private IFixture _fixture;
-		public PatchCompositeTests(ITestOutputHelper testOutputHelper)
+		public DiffCompositeTests(ITestOutputHelper testOutputHelper)
 		{
 			_testOutputHelper = testOutputHelper;
 			_fixture = new Fixture();
@@ -21,68 +21,68 @@ namespace ObjectPatcher.Tests
 
 
 		[Fact]
-		public void Patch_WhenThereAreChanges_ShouldReturnTrue()
+		public void Diff_WhenThereAreChanges_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PropertyPatchBuilder<TestObject>.Build().ToArray());
+			var sut = new DiffComposite<TestObject>(PropertyDiffBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = _fixture.Create<TestObject>();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue);
+			var result = sut.Diff(originalValue, targetValue);
 
 			// Assert
 			result.HasChanges().ShouldBeTrue();
 		}
 
 		[Fact]
-		public void Patch_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
+		public void Diff_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PropertyPatchBuilder<TestObject>.Build().ToArray());
+			var sut = new DiffComposite<TestObject>(PropertyDiffBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 
 			// Act
-			var result = sut.Patch(originalValue, originalValue);
+			var result = sut.Diff(originalValue, originalValue);
 
 			// Assert
 			result.HasChanges().ShouldBeFalse();
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreNoChanges_ShouldReturnFalse()
+		public void Diff_WhenThereAreNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PropertyPatchBuilder<TestObject>.Build().ToArray());
+			var sut = new DiffComposite<TestObject>(PropertyDiffBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = (TestObject)originalValue.Clone();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue);
+			var result = sut.Diff(originalValue, targetValue);
 
 			// Assert
 			result.HasChanges().ShouldBeFalse();
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
+		public void Diff_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PropertyPatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new DiffComposite<TestObjectWithArrays>(PropertyDiffBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Diff(originalValue, targetValue).ToList();
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var diffItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {diffItem.Name}, Has Changes: {diffItem.HasChanges}");
 			}
 			result.HasChanges().ShouldBeFalse();
 		}

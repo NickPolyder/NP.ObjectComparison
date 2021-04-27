@@ -6,11 +6,11 @@ using Xunit;
 
 namespace ObjectPatcher.Tests.Results
 {
-	public class PatchItemTests
+	public class ObjectItemTests
 	{
 		private IFixture _fixture;
 
-		public PatchItemTests()
+		public ObjectItemTests()
 		{
 			_fixture = new Fixture();
 		}
@@ -19,7 +19,7 @@ namespace ObjectPatcher.Tests.Results
 		public void Build_WhenSetNameIsNotCalledShouldThrowException()
 		{
 			// Arrange
-			var sut = new PatchItem.Builder();
+			var sut = new ObjectItem.Builder();
 
 			// Act
 			var result = Record.Exception(() => sut.Build());
@@ -34,7 +34,7 @@ namespace ObjectPatcher.Tests.Results
 		{
 			// Arrange
 			var nameValue = _fixture.Create<string>();
-			var sut = new PatchItem.Builder()
+			var sut = new ObjectItem.Builder()
 				.SetName(nameValue);
 
 			// Act
@@ -49,7 +49,7 @@ namespace ObjectPatcher.Tests.Results
 		{
 			// Arrange
 			var originalValue = _fixture.Create<object>();
-			var sut = new PatchItem.Builder()
+			var sut = new ObjectItem.Builder()
 				.SetName(_fixture.Create<string>())
 				.SetOriginalValue(originalValue);
 
@@ -65,7 +65,7 @@ namespace ObjectPatcher.Tests.Results
 		{
 			// Arrange
 			var newValue = _fixture.Create<object>();
-			var sut = new PatchItem.Builder()
+			var sut = new ObjectItem.Builder()
 				.SetName(_fixture.Create<string>())
 				.SetNewValue(newValue);
 
@@ -80,7 +80,7 @@ namespace ObjectPatcher.Tests.Results
 		public void Build_WhenSetHasChanges_ShouldPopulate_HasChanges()
 		{
 			// Arrange
-			var sut = new PatchItem.Builder()
+			var sut = new ObjectItem.Builder()
 				.SetName(_fixture.Create<string>())
 				.HasChanges();
 

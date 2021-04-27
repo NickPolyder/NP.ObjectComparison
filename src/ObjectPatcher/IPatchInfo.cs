@@ -5,6 +5,6 @@ namespace ObjectPatcher
 {
 	public interface IPatchInfo<in TInstance>
 	{
-		IEnumerable<PatchItem> Patch(TInstance originalInstance, TInstance targetInstance);
+		IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance);
 	}
 }

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace ObjectPatcher.Tests
 {
-	public class PropertyPatchTests
+	public class PropertyDiffTests
 	{
 		[Fact]
 		public void Ctor_WhenObjectInfoIsNull_ThrowArgumentNullException()
@@ -12,7 +12,7 @@ namespace ObjectPatcher.Tests
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(null));
+			var result = Record.Exception(() => new PropertyDiff<object, object>(null));
 
 			// Assert
 			result.ShouldBeOfType<ArgumentNullException>()
@@ -26,7 +26,7 @@ namespace ObjectPatcher.Tests
 			var objectInfo = new ObjectInfo<object, object>(() => "", _ => null, (x,y) => { });
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(objectInfo));
+			var result = Record.Exception(() => new PropertyDiff<object, object>(objectInfo));
 
 			// Assert
 			result.ShouldBeNull();
