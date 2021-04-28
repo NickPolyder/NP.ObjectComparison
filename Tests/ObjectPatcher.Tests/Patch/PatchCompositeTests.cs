@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using AutoFixture;
+using ObjectPatcher.Patch;
 using ObjectPatcher.Results;
 using ObjectPatcher.Tests.Mocks;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ObjectPatcher.Tests
+namespace ObjectPatcher.Tests.Patch
 {
 	public class PatchCompositeTests
 	{
@@ -24,7 +25,7 @@ namespace ObjectPatcher.Tests
 		public void Patch_WhenThereAreChanges_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PropertyPatchBuilder<TestObject>.Build().ToArray());
+			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = _fixture.Create<TestObject>();
@@ -40,7 +41,7 @@ namespace ObjectPatcher.Tests
 		public void Patch_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PropertyPatchBuilder<TestObject>.Build().ToArray());
+			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 
@@ -55,7 +56,7 @@ namespace ObjectPatcher.Tests
 		public void Patch_WhenThereAreNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PropertyPatchBuilder<TestObject>.Build().ToArray());
+			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = (TestObject)originalValue.Clone();
@@ -71,7 +72,7 @@ namespace ObjectPatcher.Tests
 		public void Patch_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PropertyPatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();

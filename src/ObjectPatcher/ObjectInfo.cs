@@ -48,40 +48,6 @@ namespace ObjectPatcher
 		{
 			return _equalsPredicate(originalValue, targetValue);
 		}
-
-		public ObjectItem Diff(TInstance originalInstance, TInstance targetInstance)
-		{
-			var originalValue = Get(originalInstance);
-			var newValue = Get(targetInstance);
-			var patchInfoBuilder = new ObjectItem.Builder()
-				.SetName(GetName())
-				.SetOriginalValue(originalValue)
-				.SetNewValue(newValue);
-
-			if (!IsEqual(originalValue, newValue))
-			{
-				patchInfoBuilder.HasChanges();
-			}
-
-			return patchInfoBuilder.Build();
-		}
-
-		public ObjectItem Patch(TInstance originalInstance, TInstance targetInstance)
-		{
-			var originalValue = Get(originalInstance);
-			var newValue = Get(targetInstance);
-			var patchInfoBuilder = new ObjectItem.Builder()
-				.SetName(GetName())
-				.SetOriginalValue(originalValue)
-				.SetNewValue(newValue);
-
-			if (!IsEqual(originalValue, newValue))
-			{
-				patchInfoBuilder.HasChanges();
-				Set(originalInstance, newValue);
-			}
-
-			return patchInfoBuilder.Build();
-		}
+		
 	}
 }

@@ -1,10 +1,11 @@
 ﻿using System;
+using ObjectPatcher.Diff;
 using Shouldly;
 using Xunit;
 
-namespace ObjectPatcher.Tests
+namespace ObjectPatcher.Tests.Diff
 {
-	public class PropertyPatchTests
+	public class ObjectDiffTests
 	{
 		[Fact]
 		public void Ctor_WhenObjectInfoIsNull_ThrowArgumentNullException()
@@ -12,7 +13,7 @@ namespace ObjectPatcher.Tests
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(null));
+			var result = Record.Exception(() => new ObjectDiff<object, object>(null));
 
 			// Assert
 			result.ShouldBeOfType<ArgumentNullException>()
@@ -26,7 +27,7 @@ namespace ObjectPatcher.Tests
 			var objectInfo = new ObjectInfo<object, object>(() => "", _ => null, (x,y) => { });
 
 			// Act
-			var result = Record.Exception(() => new PropertyPatch<object, object>(objectInfo));
+			var result = Record.Exception(() => new ObjectDiff<object, object>(objectInfo));
 
 			// Assert
 			result.ShouldBeNull();

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ObjectPatcher.Results;
 
-namespace ObjectPatcher
+namespace ObjectPatcher.Patch
 {
 	public interface IPatchInfo<in TInstance>
 	{

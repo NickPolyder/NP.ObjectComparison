@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ObjectPatcher.Results;
 
-namespace ObjectPatcher
+namespace ObjectPatcher.Diff
 {
 	public interface IDiffInfo<in TInstance>
 	{

@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using AutoFixture;
+using ObjectPatcher.Diff;
 using ObjectPatcher.Results;
 using ObjectPatcher.Tests.Mocks;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ObjectPatcher.Tests
+namespace ObjectPatcher.Tests.Diff
 {
 	public class DiffCompositeTests
 	{
@@ -24,7 +25,7 @@ namespace ObjectPatcher.Tests
 		public void Diff_WhenThereAreChanges_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new DiffComposite<TestObject>(PropertyDiffBuilder<TestObject>.Build().ToArray());
+			var sut = new DiffComposite<TestObject>(DiffBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = _fixture.Create<TestObject>();
@@ -40,7 +41,7 @@ namespace ObjectPatcher.Tests
 		public void Diff_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new DiffComposite<TestObject>(PropertyDiffBuilder<TestObject>.Build().ToArray());
+			var sut = new DiffComposite<TestObject>(DiffBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 
@@ -55,7 +56,7 @@ namespace ObjectPatcher.Tests
 		public void Diff_WhenThereAreNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new DiffComposite<TestObject>(PropertyDiffBuilder<TestObject>.Build().ToArray());
+			var sut = new DiffComposite<TestObject>(DiffBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = (TestObject)originalValue.Clone();
@@ -71,7 +72,7 @@ namespace ObjectPatcher.Tests
 		public void Diff_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new DiffComposite<TestObjectWithArrays>(PropertyDiffBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new DiffComposite<TestObjectWithArrays>(DiffBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();

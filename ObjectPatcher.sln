@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2DD38859
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectPatcher.Tests", "Tests\ObjectPatcher.Tests\ObjectPatcher.Tests.csproj", "{0B567D27-2E8C-441D-81A9-B593668796C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectPatcher.Common.Test.Framework", "src\ObjectPatcher.Common.Test.Framework\ObjectPatcher.Common.Test.Framework.csproj", "{BCA4BC95-C637-483E-B127-989D8854057C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectPatcher.Common.Test.Framework", "src\ObjectPatcher.Common.Test.Framework\ObjectPatcher.Common.Test.Framework.csproj", "{BCA4BC95-C637-483E-B127-989D8854057C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
