@@ -11,7 +11,7 @@ namespace ObjectPatcher
 		private readonly Func<string> _getNameFunction;
 		private readonly Func<TInstance, TObject> _getterFunction;
 		private readonly Action<TInstance, TObject> _setterAction;
-		private readonly EqualsPredicate<TObject> _equalsPredicate;
+		private EqualsPredicate<TObject> _equalsPredicate;
 
 		public ObjectInfo(Func<string> getNameFunction, Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction)
 			: this(getNameFunction, getterFunction, setterAction, (origin, target) => origin.Equals(target))
@@ -28,6 +28,10 @@ namespace ObjectPatcher
 			_equalsPredicate = equalsPredicate ?? throw new ArgumentNullException(nameof(equalsPredicate));
 		}
 
+		public void SetEqualsPredicate(EqualsPredicate<TObject> equalsPredicate)
+		{
+			_equalsPredicate = equalsPredicate ?? throw new ArgumentNullException(nameof(equalsPredicate));
+		}
 
 		public string GetName()
 		{

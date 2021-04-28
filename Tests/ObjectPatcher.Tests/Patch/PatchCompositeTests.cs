@@ -87,5 +87,79 @@ namespace ObjectPatcher.Tests.Patch
 			}
 			result.HasChanges().ShouldBeFalse();
 		}
+
+		[Fact]
+		public void Patch_WhenThereAreCollectionsChanges_ShouldReturnTrue()
+		{
+			// Arrange
+			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+
+			var originalValue = _fixture.Create<TestObjectWithArrays>();
+			var targetValue = (TestObjectWithArrays)originalValue.Clone();
+
+			targetValue.FirstProperty[0] = _fixture.Create<string>();
+
+			// Act
+			var result = sut.Patch(originalValue, targetValue).ToList();
+
+			// Assert
+			foreach (var patchItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+			}
+			result.HasChanges().ShouldBeTrue();
+		}
+
+		[Fact]
+		public void Patch_WhenThereAreCollectionsHasAddedItems_ShouldReturnTrue()
+		{
+			// Arrange
+			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+
+			var originalValue = _fixture.Create<TestObjectWithArrays>();
+			var targetValue = (TestObjectWithArrays)originalValue.Clone();
+
+			var addItemToArray = targetValue.FirstProperty.ToList();
+
+			addItemToArray.Add(_fixture.Create<string>());
+
+			targetValue.FirstProperty = addItemToArray.ToArray();
+
+			// Act
+			var result = sut.Patch(originalValue, targetValue).ToList();
+
+			// Assert
+			foreach (var patchItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+			}
+			result.HasChanges().ShouldBeTrue();
+		}
+
+		[Fact]
+		public void Patch_WhenThereAreCollectionsHasDeletedItems_ShouldReturnTrue()
+		{
+			// Arrange
+			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+
+			var originalValue = _fixture.Create<TestObjectWithArrays>();
+			var targetValue = (TestObjectWithArrays)originalValue.Clone();
+
+			var deleteItemArray = targetValue.FirstProperty.ToList();
+
+			deleteItemArray.RemoveAt(0);
+
+			targetValue.FirstProperty = deleteItemArray.ToArray();
+
+			// Act
+			var result = sut.Patch(originalValue, targetValue).ToList();
+
+			// Assert
+			foreach (var patchItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+			}
+			result.HasChanges().ShouldBeTrue();
+		}
 	}
 }

@@ -12,7 +12,7 @@ namespace ObjectPatcher.Patch
 		{
 			_objectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
-		
+
 		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
 			var originalValue = _objectInfo.Get(originalInstance);
