@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using ObjectPatcher.Patch;
 
-namespace ObjectPatcher
+namespace ObjectPatcher.Patch
 {
 	public interface IPatchBuilderStrategy
 	{

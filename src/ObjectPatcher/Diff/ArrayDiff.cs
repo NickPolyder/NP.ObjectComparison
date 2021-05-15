@@ -1,46 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ObjectPatcher.Results;
 
-namespace ObjectPatcher.Patch
+namespace ObjectPatcher.Diff
 {
-	public class ArrayPatch<TInstance, TArray, TArrayOf> : IPatchInfo<TInstance>
+	public class ArrayDiff<TInstance, TArray, TArrayOf> : IDiffInfo<TInstance>
 	{
 		private readonly ArrayObjectInfo<TInstance, TArray, TArrayOf> _objectInfo;
 
-		public ArrayPatch(ArrayObjectInfo<TInstance, TArray, TArrayOf> objectInfo)
+		public ArrayDiff(ArrayObjectInfo<TInstance, TArray, TArrayOf> objectInfo)
 		{
 			_objectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
 
-		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
+		public IEnumerable<ObjectItem> Diff(TInstance originalInstance, TInstance targetInstance)
 		{
 			var originalArray = _objectInfo.GetArray(originalInstance);
 			var newArray =  _objectInfo.GetArray(targetInstance);
 			
 			var hasDeletedItems = originalArray.Length > newArray.Length;
 			var hasAddedItems = originalArray.Length < newArray.Length;
-
-			bool hasChanges = hasDeletedItems || hasAddedItems;
-
-			var patchedItems = new List<ObjectItem>();
+			
+			var diffItems = new List<ObjectItem>();
 
 			for (int index = 0; index < originalArray.Length && index < newArray.Length; index++)
 			{
 				var originalItem = originalArray[index];
 				var newItem = newArray[index];
-				var patchInfoBuilder = new ObjectItem.Builder()
+				var diffInfoBuilder = new ObjectItem.Builder()
 					.SetName($"{_objectInfo.GetName()}[{index}]")
 					.SetOriginalValue(originalItem)
 					.SetNewValue(newItem);
 
 				if (!_objectInfo.IsItemEqual(originalItem, newItem))
 				{
-					patchInfoBuilder.HasChanges();
-					hasChanges = true;
+					diffInfoBuilder.HasChanges();
 				}
-				patchedItems.Add(patchInfoBuilder.Build());
+				
+				diffItems.Add(diffInfoBuilder.Build());
 			}
 
 			if (hasDeletedItems)
@@ -48,13 +45,14 @@ namespace ObjectPatcher.Patch
 				for (int index = newArray.Length; index < originalArray.Length; index++)
 				{
 					var originalItem = originalArray[index];
-					var patchInfoBuilder = new ObjectItem.Builder()
+					var diffInfoBuilder = new ObjectItem.Builder()
 						.SetName($"{_objectInfo.GetName()}[{index}]")
 						.SetOriginalValue(originalItem)
 						.SetNewValue(null);
 					
-					patchInfoBuilder.HasChanges();
-					patchedItems.Add(patchInfoBuilder.Build());
+					diffInfoBuilder.HasChanges();
+
+					diffItems.Add(diffInfoBuilder.Build());
 				}
 			}
 
@@ -63,22 +61,17 @@ namespace ObjectPatcher.Patch
 				for (int index = originalArray.Length; index < newArray.Length; index++)
 				{
 					var newItem = newArray[index];
-					var patchInfoBuilder = new ObjectItem.Builder()
+					var diffInfoBuilder = new ObjectItem.Builder()
 						.SetName($"{_objectInfo.GetName()}[{index}]")
 						.SetOriginalValue(null)
 						.SetNewValue(newItem);
 
-					patchInfoBuilder.HasChanges();
-					patchedItems.Add(patchInfoBuilder.Build());
+					diffInfoBuilder.HasChanges();
+					diffItems.Add(diffInfoBuilder.Build());
 				}
 			}
-
-			if (hasChanges)
-			{
-				_objectInfo.Set(originalInstance, _objectInfo.Get(targetInstance));
-			}
-
-			return patchedItems;
+			
+			return diffItems;
 		}
 	}
 }

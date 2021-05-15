@@ -1,20 +1,20 @@
 ﻿using System.Reflection;
 
-namespace ObjectPatcher.Patch.Strategies
+namespace ObjectPatcher.Diff.Strategies
 {
-	public class ArrayPatchBuilderStrategy : IPatchBuilderStrategy
+	public class ArrayDiffBuilderStrategy : IDiffBuilderStrategy
 	{
-		public IPatchInfo<TInstance> Build<TInstance>(PropertyInfo propertyInfo)
+		public IDiffInfo<TInstance> Build<TInstance>(PropertyInfo propertyInfo)
 		{
 			var arrayOf = propertyInfo.PropertyType.GetCollectionElementType();
 
 			var objectInfo = ArrayObjectInfoBuilder<TInstance>.Build(propertyInfo);
 				var propertyPatchType =
-				typeof(ArrayPatch<,,>)
+				typeof(ArrayDiff<,,>)
 					.MakeGenericType(typeof(TInstance), propertyInfo.PropertyType, arrayOf)
 					.GetConstructors()[0];
 
-			return (IPatchInfo<TInstance>)propertyPatchType.Invoke(new[] { objectInfo });
+			return (IDiffInfo<TInstance>)propertyPatchType.Invoke(new[] { objectInfo });
 		}
 	}
 }
