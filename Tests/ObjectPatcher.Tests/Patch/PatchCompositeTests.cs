@@ -161,5 +161,27 @@ namespace ObjectPatcher.Tests.Patch
 			}
 			result.HasChanges().ShouldBeTrue();
 		}
+
+		[Fact]
+		public void Patch_WhenThereAreDictionariesWithDeletedItems_ShouldReturnTrue()
+		{
+			// Arrange
+			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+
+			var originalValue = _fixture.Create<TestObjectWithArrays>();
+			var targetValue = (TestObjectWithArrays)originalValue.Clone();
+
+			 targetValue.SecondProperty.Remove(targetValue.SecondProperty.Keys.ToArray()[0]);
+			
+			// Act
+			var result = sut.Patch(originalValue, targetValue).ToList();
+
+			// Assert
+			foreach (var patchItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+			}
+			result.HasChanges().ShouldBeTrue();
+		}
 	}
 }

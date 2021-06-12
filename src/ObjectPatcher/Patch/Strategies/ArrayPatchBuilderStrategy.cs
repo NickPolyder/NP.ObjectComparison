@@ -9,10 +9,10 @@ namespace ObjectPatcher.Patch.Strategies
 			var arrayOf = propertyInfo.PropertyType.GetCollectionElementType();
 
 			var objectInfo = ArrayObjectInfoBuilder<TInstance>.Build(propertyInfo);
-				var propertyPatchType =
-				typeof(ArrayPatch<,,>)
-					.MakeGenericType(typeof(TInstance), propertyInfo.PropertyType, arrayOf)
-					.GetConstructors()[0];
+			var propertyPatchType =
+			typeof(ArrayPatch<,,>)
+				.MakeGenericType(typeof(TInstance), propertyInfo.PropertyType, arrayOf)
+				.GetConstructors()[0];
 
 			return (IPatchInfo<TInstance>)propertyPatchType.Invoke(new[] { objectInfo });
 		}

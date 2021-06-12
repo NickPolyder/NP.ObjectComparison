@@ -8,7 +8,7 @@ namespace ObjectPatcher.Tests.Mocks
 	{
 		public string[] FirstProperty { get; set; }
 
-		public Dictionary<int,string> SecondProperty { get; set; }
+		public Dictionary<string, string> SecondProperty { get; set; }
 
 		public DateTime ThirdProperty { get; set; }
 
@@ -19,7 +19,7 @@ namespace ObjectPatcher.Tests.Mocks
 			return new TestObjectWithArrays
 			{
 				FirstProperty = (string[])FirstProperty.Clone(),
-				SecondProperty = SecondProperty,
+				SecondProperty = SecondProperty.ToDictionary(key => key.Key, value => (string)value.Value.Clone()),
 				ThirdProperty = ThirdProperty,
 				FourthProperty = FourthProperty.Select(item=> (OtherTestObject)item.Clone()).ToList()
 			};

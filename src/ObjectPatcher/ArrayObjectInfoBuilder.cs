@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace ObjectPatcher
 {
-	public class ObjectInfoBuilder<TInstance>
+	public class ArrayObjectInfoBuilder<TInstance>
 	{
 		public static object Build(PropertyInfo publicProperty)
 		{
@@ -25,8 +25,10 @@ namespace ObjectPatcher
 
 			var setterFunc = setterLambdaExpression.Compile();
 
-			var objectInfoType = typeof(ObjectInfo<,>)
-				.MakeGenericType(typeof(TInstance), publicProperty.PropertyType)
+			var arrayOf = publicProperty.PropertyType.GetCollectionElementType();
+
+			var objectInfoType = typeof(ArrayObjectInfo<,,>)
+				.MakeGenericType(typeof(TInstance), publicProperty.PropertyType, arrayOf)
 				.GetConstructors()[0];
 
 			var objectInfo = objectInfoType.Invoke(new object[]

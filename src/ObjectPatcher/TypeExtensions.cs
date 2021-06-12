@@ -35,5 +35,19 @@ namespace ObjectPatcher
 
 			return null;
 		}
+
+		public static bool HasInterface<TInterfaceType>(this Type @thisType)
+		{
+			return @thisType.HasInterface(typeof(TInterfaceType));
+		}
+
+		public static bool HasInterface(this Type @thisType, Type interfaceType)
+		{
+
+			return interfaceType.IsAssignableFrom(@thisType) || 
+			       @thisType.GetInterfaces().Any(item => item == interfaceType 
+			                                                          || (item.IsGenericType 
+			                                                              && item.GetGenericTypeDefinition() == interfaceType));
+		}
 	}
 }
