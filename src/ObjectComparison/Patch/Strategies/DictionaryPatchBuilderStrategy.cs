@@ -4,7 +4,7 @@ namespace ObjectComparison.Patch.Strategies
 {
 	public class DictionaryPatchBuilderStrategy : IPatchBuilderStrategy
 	{
-		public IPatchInfo<TInstance> Build<TInstance>(PropertyInfo propertyInfo)
+		public IPatchInfo<TInstance> Build<TInstance>(PropertyInfo propertyInfo, TypeGeneratorBuilderOptions options)
 		{
 			var genericParameters = propertyInfo.PropertyType.GetGenericArguments();
 

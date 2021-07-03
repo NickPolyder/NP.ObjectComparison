@@ -16,6 +16,12 @@ namespace ObjectComparison.Patch
 
 		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
+			if (originalInstance == null)
+				return Enumerable.Empty<ObjectItem>();
+
+			if (targetInstance == null)
+				return Enumerable.Empty<ObjectItem>();
+
 			var original = _objectInfo.Get(originalInstance);
 			var target = _objectInfo.Get(targetInstance);
 			var originalKeys = original.Keys;

@@ -4,7 +4,7 @@ namespace ObjectComparison.Patch.Strategies
 {
 	public class ArrayPatchBuilderStrategy : IPatchBuilderStrategy
 	{
-		public IPatchInfo<TInstance> Build<TInstance>(PropertyInfo propertyInfo)
+		public IPatchInfo<TInstance> Build<TInstance>(PropertyInfo propertyInfo, TypeGeneratorBuilderOptions options)
 		{
 			var arrayOf = propertyInfo.PropertyType.GetCollectionElementType();
 

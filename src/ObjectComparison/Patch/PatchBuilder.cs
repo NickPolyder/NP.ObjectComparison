@@ -1,34 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using ObjectComparison.Patch.Strategies;
+﻿using System.Collections.Generic;
 
 namespace ObjectComparison.Patch
 {
 	public class PatchBuilder<TInstance>
 	{
-		private static readonly Type _dictionaryInterface = typeof(IDictionary<,>);
-		private static readonly IPatchBuilderStrategy _objectBuilderStrategy = new ObjectPatchBuilderStrategy();
-		private static readonly IPatchBuilderStrategy _arrayBuilderStrategy = new ArrayPatchBuilderStrategy();
-		private static readonly IPatchBuilderStrategy _dictionaryBuilderStrategy = new DictionaryPatchBuilderStrategy();
-		public static IEnumerable<IPatchInfo<TInstance>> Build()
+		public static IEnumerable<IPatchInfo<TInstance>> Build(TypeGeneratorBuilderOptions options = null)
 		{
+			var localOptions = options ?? new TypeGeneratorBuilderOptions();
 			var publicProperties = typeof(TInstance).GetProperties();
-
+			
 			foreach (var publicProperty in publicProperties)
 			{
-				if (publicProperty.PropertyType.HasInterface(_dictionaryInterface))
+				if (publicProperty.PropertyType.HasInterface(Constants.DictionaryInterfaceType))
 				{
-					yield return _dictionaryBuilderStrategy.Build<TInstance>(publicProperty);
+					var dictionaryPatch = PatchConstants.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
+					if (dictionaryPatch != null)
+					{
+						yield return dictionaryPatch;
+					}
 					continue;
 				}
 
 				if (publicProperty.PropertyType.IsCollectionType())
 				{
-					yield return _arrayBuilderStrategy.Build<TInstance>(publicProperty);
+					var arrayPatch = PatchConstants.ArrayBuilderStrategy.Build<TInstance>(publicProperty);
+					if (arrayPatch != null)
+					{
+						yield return arrayPatch;
+					}
 					continue;
 				}
 				
-				yield return _objectBuilderStrategy.Build<TInstance>(publicProperty);
+				var objectPatch =  PatchConstants.ObjectBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
+				if (objectPatch != null)
+				{
+					yield return objectPatch;
+				}
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ObjectComparison.Results;
 
 namespace ObjectComparison.Patch
@@ -15,6 +16,12 @@ namespace ObjectComparison.Patch
 
 		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
+			if (originalInstance == null)
+				return Enumerable.Empty<ObjectItem>();
+
+			if (targetInstance == null)
+				return Enumerable.Empty<ObjectItem>();
+
 			var originalArray = _objectInfo.GetArray(originalInstance);
 			var newArray =  _objectInfo.GetArray(targetInstance);
 			

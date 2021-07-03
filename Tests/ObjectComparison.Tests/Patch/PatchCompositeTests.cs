@@ -18,9 +18,9 @@ namespace ObjectComparison.Tests.Patch
 		{
 			_testOutputHelper = testOutputHelper;
 			_fixture = new Fixture();
+			_fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 		}
-
-
+		
 		[Fact]
 		public void Patch_WhenThereAreChanges_ShouldReturnTrue()
 		{
@@ -28,12 +28,28 @@ namespace ObjectComparison.Tests.Patch
 			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
+			originalValue.FifthProperty = _fixture.Create<TestObject>();
+			originalValue.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			originalValue.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			originalValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			originalValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			originalValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
 			var targetValue = _fixture.Create<TestObject>();
+			targetValue.FifthProperty = _fixture.Create<TestObject>();
+			targetValue.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			targetValue.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			targetValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			targetValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
+			targetValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue);
+			var result = sut.Patch(originalValue, targetValue).ToList();
 
 			// Assert
+			foreach (var patchItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+			}
 			result.HasChanges().ShouldBeTrue();
 		}
 
