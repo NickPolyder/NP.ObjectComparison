@@ -24,8 +24,16 @@ namespace ObjectComparison.Tests.Mocks
 
 		public bool Equals(OtherTestObject other)
 		{
-			if (ReferenceEquals(null, other)) return false;
-			if (ReferenceEquals(this, other)) return true;
+			if (ReferenceEquals(null, other))
+			{
+				return false;
+			}
+
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+
 			return OtherFirstProperty == other.OtherFirstProperty 
 			       && OtherSecondProperty == other.OtherSecondProperty
 			       && OtherThirdProperty.Equals(other.OtherThirdProperty)
@@ -34,9 +42,21 @@ namespace ObjectComparison.Tests.Mocks
 
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
+
+			if (ReferenceEquals(this, obj))
+			{
+				return true;
+			}
+
+			if (obj.GetType() != this.GetType())
+			{
+				return false;
+			}
+
 			return Equals((OtherTestObject) obj);
 		}
 

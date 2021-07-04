@@ -19,6 +19,7 @@ namespace ObjectComparison.Patch.Strategies
 					return null;
 				}
 
+
 				if (options != null)
 				{
 					options.Depth[propertyInfo]++;

@@ -13,7 +13,7 @@ namespace ObjectComparison.Patch
 			{
 				if (publicProperty.PropertyType.HasInterface(Constants.DictionaryInterfaceType))
 				{
-					var dictionaryPatch = PatchConstants.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
+					var dictionaryPatch = PatchSingletons.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
 					if (dictionaryPatch != null)
 					{
 						yield return dictionaryPatch;
@@ -23,7 +23,7 @@ namespace ObjectComparison.Patch
 
 				if (publicProperty.PropertyType.IsCollectionType())
 				{
-					var arrayPatch = PatchConstants.ArrayBuilderStrategy.Build<TInstance>(publicProperty);
+					var arrayPatch = PatchSingletons.ArrayBuilderStrategy.Build<TInstance>(publicProperty);
 					if (arrayPatch != null)
 					{
 						yield return arrayPatch;
@@ -31,7 +31,7 @@ namespace ObjectComparison.Patch
 					continue;
 				}
 				
-				var objectPatch =  PatchConstants.ObjectBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
+				var objectPatch =  PatchSingletons.ObjectBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
 				if (objectPatch != null)
 				{
 					yield return objectPatch;

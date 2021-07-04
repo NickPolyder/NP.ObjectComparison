@@ -19,10 +19,14 @@ namespace ObjectComparison.Patch
 		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
 			if (originalInstance == null)
+			{
 				yield break;
+			}
 
 			if (targetInstance == null)
+			{
 				yield break;
+			}
 
 			var originalValue = _objectInfo.Get(originalInstance);
 			var newValue = _objectInfo.Get(targetInstance);
@@ -56,10 +60,14 @@ namespace ObjectComparison.Patch
 		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
 		{
 			if (originalInstance == null)
+			{
 				yield break;
+			}
 
 			if (targetInstance == null)
+			{
 				yield break;
+			}
 
 			var originalValue = _objectInfo.Get(originalInstance);
 			var newValue = _objectInfo.Get(targetInstance);
