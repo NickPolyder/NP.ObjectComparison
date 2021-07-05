@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ObjectComparison.Results;
 
 namespace ObjectComparison.Diff
 {
+	[DebuggerDisplay("Object Diff: {_objectInfo.GetName()}")]
 	public class ObjectDiff<TInstance, TObject> : IDiffInfo<TInstance>
 	{
 		private readonly ObjectInfo<TInstance, TObject> _objectInfo;

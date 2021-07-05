@@ -14,14 +14,17 @@ namespace ObjectComparison.Tests.Mocks
 
 		public List<OtherTestObject> FourthProperty { get; set; }
 
+		public Dictionary<string, OtherTestObject> FifthProperty { get; set; }
+
 		public object Clone()
 		{
 			return new TestObjectWithArrays
 			{
 				FirstProperty = (string[])FirstProperty.Clone(),
-				SecondProperty = SecondProperty.ToDictionary(key => key.Key, value => (string)value.Value.Clone()),
+				SecondProperty = SecondProperty?.ToDictionary(key => key.Key, value => (string)value.Value.Clone()),
 				ThirdProperty = ThirdProperty,
-				FourthProperty = FourthProperty.Select(item=> (OtherTestObject)item.Clone()).ToList()
+				FourthProperty = FourthProperty?.Select(item=> (OtherTestObject)item.Clone()).ToList(),
+				FifthProperty = FifthProperty?.ToDictionary(key => key.Key, value => (OtherTestObject)value.Value.Clone()),
 			};
 		}
 	}

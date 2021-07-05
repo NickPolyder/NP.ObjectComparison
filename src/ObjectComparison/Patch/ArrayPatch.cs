@@ -1,94 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using ObjectComparison.Results;
 
 namespace ObjectComparison.Patch
 {
-	public class ArrayPatch<TInstance, TArray, TArrayOf> : IPatchInfo<TInstance>
+	[DebuggerDisplay("Array Patch: {ObjectInfo.GetName()}")]
+	public class ArrayPatch<TInstance, TArray, TArrayOf> : BaseArrayPatch<TInstance, TArray, TArrayOf>
 	{
-		private readonly ArrayObjectInfo<TInstance, TArray, TArrayOf> _objectInfo;
-
-		public ArrayPatch(ArrayObjectInfo<TInstance, TArray, TArrayOf> objectInfo)
+		public ArrayPatch(ArrayObjectInfo<TInstance, TArray, TArrayOf> objectInfo) : base(objectInfo)
 		{
-			_objectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
 
-		public IEnumerable<ObjectItem> Patch(TInstance originalInstance, TInstance targetInstance)
+		protected override IEnumerable<ObjectItem> HandleModifiedItems(TArrayOf[] originalArray, TArrayOf[] targetArray)
 		{
-			if (originalInstance == null)
-			{
-				return Enumerable.Empty<ObjectItem>();
-			}
-
-			if (targetInstance == null)
-			{
-				return Enumerable.Empty<ObjectItem>();
-			}
-
-			var originalArray = _objectInfo.GetArray(originalInstance);
-			var newArray =  _objectInfo.GetArray(targetInstance);
-			
-			var hasDeletedItems = originalArray.Length > newArray.Length;
-			var hasAddedItems = originalArray.Length < newArray.Length;
-
-			bool hasChanges = hasDeletedItems || hasAddedItems;
-
-			var patchedItems = new List<ObjectItem>();
-
-			for (int index = 0; index < originalArray.Length && index < newArray.Length; index++)
+			for (int index = 0; index < originalArray.Length && index < targetArray.Length; index++)
 			{
 				var originalItem = originalArray[index];
-				var newItem = newArray[index];
+				var newItem = targetArray[index];
 				var patchInfoBuilder = new ObjectItem.Builder()
-					.SetName($"{_objectInfo.GetName()}[{index}]")
+					.SetName($"{ObjectInfo.GetName()}[{index}]")
 					.SetOriginalValue(originalItem)
 					.SetNewValue(newItem);
 
-				if (!_objectInfo.IsItemEqual(originalItem, newItem))
+				if (!ObjectInfo.IsItemEqual(originalItem, newItem))
 				{
 					patchInfoBuilder.HasChanges();
-					hasChanges = true;
 				}
-				patchedItems.Add(patchInfoBuilder.Build());
+
+				yield return patchInfoBuilder.Build();
 			}
-
-			if (hasDeletedItems)
-			{
-				for (int index = newArray.Length; index < originalArray.Length; index++)
-				{
-					var originalItem = originalArray[index];
-					var patchInfoBuilder = new ObjectItem.Builder()
-						.SetName($"{_objectInfo.GetName()}[{index}]")
-						.SetOriginalValue(originalItem)
-						.SetNewValue(null);
-					
-					patchInfoBuilder.HasChanges();
-					patchedItems.Add(patchInfoBuilder.Build());
-				}
-			}
-
-			if (hasAddedItems)
-			{
-				for (int index = originalArray.Length; index < newArray.Length; index++)
-				{
-					var newItem = newArray[index];
-					var patchInfoBuilder = new ObjectItem.Builder()
-						.SetName($"{_objectInfo.GetName()}[{index}]")
-						.SetOriginalValue(null)
-						.SetNewValue(newItem);
-
-					patchInfoBuilder.HasChanges();
-					patchedItems.Add(patchInfoBuilder.Build());
-				}
-			}
-
-			if (hasChanges)
-			{
-				_objectInfo.Set(originalInstance, _objectInfo.Get(targetInstance));
-			}
-
-			return patchedItems;
 		}
 	}
 }

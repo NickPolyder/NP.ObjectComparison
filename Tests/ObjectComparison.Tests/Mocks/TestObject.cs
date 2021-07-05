@@ -20,8 +20,8 @@ namespace ObjectComparison.Tests.Mocks
 				FirstProperty = FirstProperty,
 				SecondProperty = SecondProperty,
 				ThirdProperty = ThirdProperty,
-				FourthProperty = (OtherTestObject)FourthProperty.Clone(),
-				FifthProperty = (TestObject)FifthProperty.Clone()
+				FourthProperty = (OtherTestObject)FourthProperty?.Clone(),
+				FifthProperty = (TestObject)FifthProperty?.Clone()
 			};
 		}
 	}
