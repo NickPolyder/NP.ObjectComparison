@@ -77,9 +77,9 @@ namespace ObjectComparison.Analyzers
 				var infoBuilder = new DiffSnapshot.Builder()
 					.SetName($"{ObjectInfo.GetName()}[{deletedKey}]")
 					.SetOriginalValue(originalItem)
-					.SetNewValue(null);
+					.SetNewValue(null)
+					.HasChanges();
 
-				infoBuilder.HasChanges();
 				yield return infoBuilder.Build();
 			}
 		}
@@ -102,9 +102,9 @@ namespace ObjectComparison.Analyzers
 				var infoBuilder = new DiffSnapshot.Builder()
 					.SetName($"{ObjectInfo.GetName()}[{addedKey}]")
 					.SetOriginalValue(null)
-					.SetNewValue(targetItem);
+					.SetNewValue(targetItem)
+					.HasChanges();
 
-				infoBuilder.HasChanges();
 				yield return infoBuilder.Build();
 			}
 		}
