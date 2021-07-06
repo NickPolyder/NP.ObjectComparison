@@ -18,16 +18,13 @@ namespace ObjectComparison.Analyzers
 			_analyzers = analyzers;
 		}
 
-		public IEnumerable<DiffSnapshot> Analyze(TInstance originalInstance, TInstance targetInstance)
+		public IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
-			if (originalInstance == null)
+			var diffAnalysisResult = new DiffAnalysisResult();
+			
+			if (originalInstance == null || targetInstance == null)
 			{
-				yield break;
-			}
-
-			if (targetInstance == null)
-			{
-				yield break;
+				return diffAnalysisResult;
 			}
 
 			var originalValue = _objectInfo.Get(originalInstance);
@@ -35,13 +32,18 @@ namespace ObjectComparison.Analyzers
 			
 			foreach (var analyzer in _analyzers)
 			{
-				foreach (var objectItem in analyzer.Analyze(originalValue, targetValue))
+				var analyzerResult = analyzer.Analyze(originalValue, targetValue);
+				foreach (var objectItem in analyzerResult)
 				{
-					yield return new DiffSnapshot.Builder(objectItem)
+					diffAnalysisResult.Add(new DiffSnapshot.Builder(objectItem)
 						.SetPrefix(_objectInfo.GetName())
-						.Build();
+						.Build());
 				}
+
+				diffAnalysisResult.MergePatchAction(new Action(analyzerResult.Patch));
 			}
+
+			return diffAnalysisResult;
 		}
 	}
 }

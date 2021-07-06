@@ -15,16 +15,12 @@ namespace ObjectComparison.Analyzers
 			ObjectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
 
-		public virtual IEnumerable<DiffSnapshot> Analyze(TInstance originalInstance, TInstance targetInstance)
+		public virtual IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
-			if (originalInstance == null)
+			var diffAnalysisResult = new DiffAnalysisResult();
+			if (originalInstance == null || targetInstance == null)
 			{
-				yield break;
-			}
-
-			if (targetInstance == null)
-			{
-				yield break;
+				return diffAnalysisResult;
 			}
 
 			var originalArray = ObjectInfo.GetArray(originalInstance);
@@ -32,33 +28,24 @@ namespace ObjectComparison.Analyzers
 
 			var deletedItems = HandleDeletedItems(originalArray, targetArray).ToArray();
 			
-			foreach (var item in deletedItems)
-			{
-				yield return item;
-			}
-
 			var addedItems = HandleAddedItems(originalArray, targetArray).ToArray();
 
-			foreach (var item in addedItems)
-			{
-				yield return item;
-			}
-
 			var modifiedItems = HandleModifiedItems(originalArray, targetArray).ToArray();
-
-			foreach (var item in modifiedItems)
-			{
-				yield return item;
-			}
-
+			
 			var hasChanges = deletedItems.Length > 0
 			                 || addedItems.Length > 0
 			                 || modifiedItems.Any(item => item.HasChanges);
 
 			if (hasChanges)
 			{
-				ObjectInfo.Set(originalInstance, ObjectInfo.Get(targetInstance));
+				diffAnalysisResult.AddPatchAction(() => ObjectInfo.Set(originalInstance, ObjectInfo.Get(targetInstance)));
 			}
+
+			diffAnalysisResult.AddRange(deletedItems);
+			diffAnalysisResult.AddRange(addedItems);
+			diffAnalysisResult.AddRange(modifiedItems);
+
+			return diffAnalysisResult;
 		}
 
 		protected virtual IEnumerable<DiffSnapshot> HandleDeletedItems(TArrayOf[] originalArray, TArrayOf[] targetArray)

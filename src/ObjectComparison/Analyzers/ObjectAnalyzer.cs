@@ -16,18 +16,14 @@ namespace ObjectComparison.Analyzers
 			_objectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
 
-		public IEnumerable<DiffSnapshot> Analyze(TInstance originalInstance, TInstance targetInstance)
+		public IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
-			if (originalInstance == null)
+			var diffAnalysis = new DiffAnalysisResult();
+			if (originalInstance == null || targetInstance == null)
 			{
-				yield break;
+				return diffAnalysis;
 			}
-
-			if (targetInstance == null)
-			{
-				yield break;
-			}
-
+			
 			var originalValue = _objectInfo.Get(originalInstance);
 			var newValue = _objectInfo.Get(targetInstance);
 			var infoBuilder = new DiffSnapshot.Builder()
@@ -38,10 +34,12 @@ namespace ObjectComparison.Analyzers
 			if (!_objectInfo.IsEqual(originalValue, newValue))
 			{
 				infoBuilder.HasChanges();
-				_objectInfo.Set(originalInstance, newValue);
+				diffAnalysis.AddPatchAction(() => _objectInfo.Set(originalInstance, newValue));
 			}
 
-			yield return infoBuilder.Build();
+			diffAnalysis.Add(infoBuilder.Build());
+			
+			return diffAnalysis;
 		}
 	}
 }

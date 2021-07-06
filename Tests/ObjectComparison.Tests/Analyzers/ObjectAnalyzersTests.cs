@@ -4,9 +4,9 @@ using ObjectComparison.Analyzers.Infos;
 using Shouldly;
 using Xunit;
 
-namespace ObjectComparison.Tests.Patch
+namespace ObjectComparison.Tests.Analyzers
 {
-	public class ObjectPatchTests
+	public class ObjectAnalyzersTests
 	{
 		[Fact]
 		public void Ctor_WhenObjectInfoIsNull_ThrowArgumentNullException()

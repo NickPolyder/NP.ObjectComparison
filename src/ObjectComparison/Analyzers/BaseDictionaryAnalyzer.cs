@@ -14,50 +14,37 @@ namespace ObjectComparison.Analyzers
 			ObjectInfo = objectInfo;
 		}
 
-		public IEnumerable<DiffSnapshot> Analyze(TInstance originalInstance, TInstance targetInstance)
+		public IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
-			if (originalInstance == null)
+			var diffAnalysisResult = new DiffAnalysisResult();
+			if (originalInstance == null || targetInstance == null)
 			{
-				yield break;
+				return diffAnalysisResult;
 			}
-
-			if (targetInstance == null)
-			{
-				yield break;
-			}
-
+			
 			var original = ObjectInfo.Get(originalInstance);
 			var target = ObjectInfo.Get(targetInstance);
 
 			var deletedItems = HandleDeletedItems(original, target).ToArray();
-
-			foreach (var item in deletedItems)
-			{
-				yield return item;
-			}
-
+			
 			var addedItems = HandleAddedItems(original, target).ToArray();
-
-			foreach (var item in addedItems)
-			{
-				yield return item;
-			}
-
+			
 			var modifiedItems = HandleModifiedItems(original, target).ToArray();
-
-			foreach (var item in modifiedItems)
-			{
-				yield return item;
-			}
-
+			
 			var hasChanges = deletedItems.Length > 0
 			                 || addedItems.Length > 0
 			                 || modifiedItems.Any(item => item.HasChanges);
 
 			if (hasChanges)
 			{
-				ObjectInfo.Set(originalInstance, target);
+				diffAnalysisResult.AddPatchAction(() => ObjectInfo.Set(originalInstance, target));
 			}
+
+			diffAnalysisResult.AddRange(deletedItems);
+			diffAnalysisResult.AddRange(addedItems);
+			diffAnalysisResult.AddRange(modifiedItems);
+
+			return diffAnalysisResult;
 		}
 
 		protected virtual IEnumerable<DiffSnapshot> HandleDeletedItems(IDictionary<TKey, TValue> original, IDictionary<TKey, TValue> target)

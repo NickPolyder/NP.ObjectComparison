@@ -7,11 +7,11 @@ using Xunit;
 
 namespace ObjectComparison.Tests.Results
 {
-	public class ObjectItemExtensionsTests
+	public class DiffSnapshotExtensionsTests
 	{
 		private IFixture _fixture;
 
-		public ObjectItemExtensionsTests()
+		public DiffSnapshotExtensionsTests()
 		{
 			_fixture = new Fixture();
 		}

@@ -7,14 +7,14 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ObjectComparison.Tests.Patch
+namespace ObjectComparison.Tests.Analyzers
 {
-	public class PatchCompositeTests
+	public class AnalyzerCompositeTests
 	{
 		private readonly ITestOutputHelper _testOutputHelper;
 
 		private IFixture _fixture;
-		public PatchCompositeTests(ITestOutputHelper testOutputHelper)
+		public AnalyzerCompositeTests(ITestOutputHelper testOutputHelper)
 		{
 			_testOutputHelper = testOutputHelper;
 			_fixture = new Fixture();
@@ -22,7 +22,7 @@ namespace ObjectComparison.Tests.Patch
 		}
 		
 		[Fact]
-		public void Patch_WhenThereAreChanges_ShouldReturnTrue()
+		public void Analyze_WhenThereAreChanges_ShouldReturnTrue()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
@@ -43,18 +43,42 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
 
 			// Act
-			var result = sut.Analyze(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var analyzeItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
 			}
+
 			result.HasChanges().ShouldBeTrue();
 		}
 
 		[Fact]
-		public void Patch_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
+		public void Analyze_WhenThereAreChangesAndCallPatch_ShouldPatchObjects()
+		{
+			// Arrange
+			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
+
+			var originalValue = _fixture.Create<TestObject>();
+			var targetValue = _fixture.Create<TestObject>();
+
+			// Act
+			var result = sut.Analyze(originalValue, targetValue);
+			result.Patch();
+
+			// Assert
+			result.IsPatched.ShouldBeTrue();
+			result.HasChanges().ShouldBeTrue();
+			foreach (var analyzeItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
+			}
+			originalValue.ShouldBe(targetValue);
+		}
+
+		[Fact]
+		public void Analyze_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
@@ -69,7 +93,7 @@ namespace ObjectComparison.Tests.Patch
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreNoChanges_ShouldReturnFalse()
+		public void Analyze_WhenThereAreNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
@@ -85,7 +109,7 @@ namespace ObjectComparison.Tests.Patch
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
+		public void Analyze_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
@@ -94,18 +118,18 @@ namespace ObjectComparison.Tests.Patch
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
 
 			// Act
-			var result = sut.Analyze(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var analyzeItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
 			}
 			result.HasChanges().ShouldBeFalse();
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreCollectionsChanges_ShouldReturnTrue()
+		public void Analyze_WhenThereAreCollectionsChanges_ShouldReturnTrue()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
@@ -116,18 +140,18 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FirstProperty[0] = _fixture.Create<string>();
 
 			// Act
-			var result = sut.Analyze(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var analyzeItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
 			}
 			result.HasChanges().ShouldBeTrue();
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreCollectionsHasAddedItems_ShouldReturnTrue()
+		public void Analyze_WhenThereAreCollectionsHasAddedItems_ShouldReturnTrue()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
@@ -142,18 +166,18 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FirstProperty = addItemToArray.ToArray();
 
 			// Act
-			var result = sut.Analyze(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var analyzeItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
 			}
 			result.HasChanges().ShouldBeTrue();
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreCollectionsHasDeletedItems_ShouldReturnTrue()
+		public void Analyze_WhenThereAreCollectionsHasDeletedItems_ShouldReturnTrue()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
@@ -168,18 +192,18 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FirstProperty = deleteItemArray.ToArray();
 
 			// Act
-			var result = sut.Analyze(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var analyzeItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
 			}
 			result.HasChanges().ShouldBeTrue();
 		}
 
 		[Fact]
-		public void Patch_WhenThereAreDictionariesWithDeletedItems_ShouldReturnTrue()
+		public void Analyze_WhenThereAreDictionariesWithDeletedItems_ShouldReturnTrue()
 		{
 			// Arrange
 			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
@@ -190,12 +214,12 @@ namespace ObjectComparison.Tests.Patch
 			 targetValue.SecondProperty.Remove(targetValue.SecondProperty.Keys.ToArray()[0]);
 			
 			// Act
-			var result = sut.Analyze(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
-			foreach (var patchItem in result)
+			foreach (var analyzeItem in result)
 			{
-				_testOutputHelper.WriteLine($"Item Name: {patchItem.Name}, Has Changes: {patchItem.HasChanges}");
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
 			}
 			result.HasChanges().ShouldBeTrue();
 		}

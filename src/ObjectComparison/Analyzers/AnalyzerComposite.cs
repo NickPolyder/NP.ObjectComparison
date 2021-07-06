@@ -12,15 +12,16 @@ namespace ObjectComparison.Analyzers
 			_analyzers = analyzers;
 		}
 
-		public IEnumerable<DiffSnapshot> Analyze(TInstance originalInstance, TInstance targetInstance)
+		public IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
+			var diffAnalysisResult = new DiffAnalysisResult();
+
 			foreach (var analyzer in _analyzers)
 			{
-				foreach (var analyzedItem in analyzer.Analyze(originalInstance, targetInstance))
-				{
-					yield return analyzedItem;
-				}
+				diffAnalysisResult.Merge(analyzer.Analyze(originalInstance, targetInstance));
 			}
+
+			return diffAnalysisResult;
 		}
 	}
 }
