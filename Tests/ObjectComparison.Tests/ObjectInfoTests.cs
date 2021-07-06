@@ -1,4 +1,5 @@
 ﻿using System;
+using ObjectComparison.Analyzers.Infos;
 using Shouldly;
 using Xunit;
 

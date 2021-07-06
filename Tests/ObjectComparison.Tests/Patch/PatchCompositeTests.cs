@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using AutoFixture;
-using ObjectComparison.Patch;
+using ObjectComparison.Analyzers;
 using ObjectComparison.Results;
 using ObjectComparison.Tests.Mocks;
 using Shouldly;
@@ -25,7 +25,7 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreChanges_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			originalValue.FifthProperty = _fixture.Create<TestObject>();
@@ -43,7 +43,7 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty.FifthProperty = _fixture.Create<TestObject>();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue).ToList();
 
 			// Assert
 			foreach (var patchItem in result)
@@ -57,12 +57,12 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenTheValuesAreTheSameReference_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 
 			// Act
-			var result = sut.Patch(originalValue, originalValue);
+			var result = sut.Analyze(originalValue, originalValue);
 
 			// Assert
 			result.HasChanges().ShouldBeFalse();
@@ -72,13 +72,13 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObject>(PatchBuilder<TestObject>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObject>(AnalyzerBuilder<TestObject>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObject>();
 			var targetValue = (TestObject)originalValue.Clone();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue);
+			var result = sut.Analyze(originalValue, targetValue);
 
 			// Assert
 			result.HasChanges().ShouldBeFalse();
@@ -88,13 +88,13 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreCollectionsAndNoChanges_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue).ToList();
 
 			// Assert
 			foreach (var patchItem in result)
@@ -108,7 +108,7 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreCollectionsChanges_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
@@ -116,7 +116,7 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FirstProperty[0] = _fixture.Create<string>();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue).ToList();
 
 			// Assert
 			foreach (var patchItem in result)
@@ -130,7 +130,7 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreCollectionsHasAddedItems_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
@@ -142,7 +142,7 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FirstProperty = addItemToArray.ToArray();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue).ToList();
 
 			// Assert
 			foreach (var patchItem in result)
@@ -156,7 +156,7 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreCollectionsHasDeletedItems_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
@@ -168,7 +168,7 @@ namespace ObjectComparison.Tests.Patch
 			targetValue.FirstProperty = deleteItemArray.ToArray();
 
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue).ToList();
 
 			// Assert
 			foreach (var patchItem in result)
@@ -182,7 +182,7 @@ namespace ObjectComparison.Tests.Patch
 		public void Patch_WhenThereAreDictionariesWithDeletedItems_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new PatchComposite<TestObjectWithArrays>(PatchBuilder<TestObjectWithArrays>.Build().ToArray());
+			var sut = new AnalyzerComposite<TestObjectWithArrays>(AnalyzerBuilder<TestObjectWithArrays>.Build().ToArray());
 
 			var originalValue = _fixture.Create<TestObjectWithArrays>();
 			var targetValue = (TestObjectWithArrays)originalValue.Clone();
@@ -190,7 +190,7 @@ namespace ObjectComparison.Tests.Patch
 			 targetValue.SecondProperty.Remove(targetValue.SecondProperty.Keys.ToArray()[0]);
 			
 			// Act
-			var result = sut.Patch(originalValue, targetValue).ToList();
+			var result = sut.Analyze(originalValue, targetValue).ToList();
 
 			// Assert
 			foreach (var patchItem in result)

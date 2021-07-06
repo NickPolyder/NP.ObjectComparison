@@ -19,7 +19,7 @@ namespace ObjectComparison.Tests.Results
 		public void Build_WhenSetNameIsNotCalledShouldThrowException()
 		{
 			// Arrange
-			var sut = new ObjectItem.Builder();
+			var sut = new DiffSnapshot.Builder();
 
 			// Act
 			var result = Record.Exception(() => sut.Build());
@@ -34,7 +34,7 @@ namespace ObjectComparison.Tests.Results
 		{
 			// Arrange
 			var nameValue = _fixture.Create<string>();
-			var sut = new ObjectItem.Builder()
+			var sut = new DiffSnapshot.Builder()
 				.SetName(nameValue);
 
 			// Act
@@ -49,7 +49,7 @@ namespace ObjectComparison.Tests.Results
 		{
 			// Arrange
 			var originalValue = _fixture.Create<object>();
-			var sut = new ObjectItem.Builder()
+			var sut = new DiffSnapshot.Builder()
 				.SetName(_fixture.Create<string>())
 				.SetOriginalValue(originalValue);
 
@@ -65,7 +65,7 @@ namespace ObjectComparison.Tests.Results
 		{
 			// Arrange
 			var newValue = _fixture.Create<object>();
-			var sut = new ObjectItem.Builder()
+			var sut = new DiffSnapshot.Builder()
 				.SetName(_fixture.Create<string>())
 				.SetNewValue(newValue);
 
@@ -80,7 +80,7 @@ namespace ObjectComparison.Tests.Results
 		public void Build_WhenSetHasChanges_ShouldPopulate_HasChanges()
 		{
 			// Arrange
-			var sut = new ObjectItem.Builder()
+			var sut = new DiffSnapshot.Builder()
 				.SetName(_fixture.Create<string>())
 				.HasChanges();
 

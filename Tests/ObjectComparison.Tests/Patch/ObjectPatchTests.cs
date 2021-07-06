@@ -1,5 +1,6 @@
 ﻿using System;
-using ObjectComparison.Patch;
+using ObjectComparison.Analyzers;
+using ObjectComparison.Analyzers.Infos;
 using Shouldly;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace ObjectComparison.Tests.Patch
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new ObjectPatch<object, object>(null));
+			var result = Record.Exception(() => new ObjectAnalyzer<object, object>(null));
 
 			// Assert
 			result.ShouldBeOfType<ArgumentNullException>()
@@ -27,7 +28,7 @@ namespace ObjectComparison.Tests.Patch
 			var objectInfo = new ObjectInfo<object, object>(() => "", _ => null, (x,y) => { });
 
 			// Act
-			var result = Record.Exception(() => new ObjectPatch<object, object>(objectInfo));
+			var result = Record.Exception(() => new ObjectAnalyzer<object, object>(objectInfo));
 
 			// Assert
 			result.ShouldBeNull();

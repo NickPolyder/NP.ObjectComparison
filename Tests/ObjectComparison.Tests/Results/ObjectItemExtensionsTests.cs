@@ -20,7 +20,7 @@ namespace ObjectComparison.Tests.Results
 		public void HasChanges_WhenEnumerableIsNull_ShouldReturnFalse()
 		{
 			// Arrange
-			List<ObjectItem> sut = null;
+			List<DiffSnapshot> sut = null;
 
 			// Act
 			var result = sut.HasChanges();
@@ -33,10 +33,10 @@ namespace ObjectComparison.Tests.Results
 		public void HasChanges_WhenItHasNone_ShouldReturnFalse()
 		{
 			// Arrange
-			var sut = new List<ObjectItem>();
+			var sut = new List<DiffSnapshot>();
 			foreach (var i in Enumerable.Range(0, 10))
 			{
-				var builder = new ObjectItem.Builder()
+				var builder = new DiffSnapshot.Builder()
 					.SetName(_fixture.Create<string>());
 
 				sut.Add(builder.Build());
@@ -53,15 +53,15 @@ namespace ObjectComparison.Tests.Results
 		public void HasChanges_WhenItHasAtLeastOne_ShouldReturnTrue()
 		{
 			// Arrange
-			var sut = new List<ObjectItem>();
+			var sut = new List<DiffSnapshot>();
 			foreach (var i in Enumerable.Range(0,10))
 			{
-				var builder = new ObjectItem.Builder()
+				var builder = new DiffSnapshot.Builder()
 					.SetName(_fixture.Create<string>());
 				
 				sut.Add(builder.Build());
 			}
-			var anotherBuilder = new ObjectItem.Builder()
+			var anotherBuilder = new DiffSnapshot.Builder()
 				.SetName(_fixture.Create<string>())
 				.HasChanges();
 
