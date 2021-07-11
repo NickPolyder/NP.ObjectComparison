@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: raspberrypi
+    runs-on: Pi-1
 
     steps:
     - uses: actions/checkout@v2
