@@ -10,5 +10,7 @@ This repository serves as a library that will make Object Patching and diff easi
 - ~~Add Depth functionality on Diff code~~
 - ~~Maybe make a Diff functionality that can apply the patch later by calling a method ?~~ 
 - Figure out how to publish alpha packages outside of nuget.org
+- Unit Tests
+- 
 
 
