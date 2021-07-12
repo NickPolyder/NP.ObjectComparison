@@ -2,6 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	  <PackageOutputPath>../../nuget-packages</PackageOutputPath>
+    <Version>0.9.0</Version>
+    <Authors>Nick Polyderopoulos</Authors>
+    <Company>Nick Polyderopoulos</Company>
+    <Product>Object Comparison</Product>
+    <Description>A .net library that performs diff and patch operations on .net objects</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright (c) 2021 Nick Polyderopoulos</Copyright>
+    <PackageProjectUrl>https://github.com/NickPolyder/ObjectComparison</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
+    <RepositoryType>Private</RepositoryType>
+    <PackageTags>comparison</PackageTags>
+    <PackageReleaseNotes>Diff Analyzers &amp; Patch applier</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
