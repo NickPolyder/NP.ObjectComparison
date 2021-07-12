@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ main ]
 
-jobs:
-  setup:
+jobs:   
+  build:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
@@ -15,10 +15,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-  build:
-    needs: setup
-    runs-on: self-hosted
-    steps:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
