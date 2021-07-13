@@ -10,9 +10,6 @@ on:
 jobs:   
   build:
     runs-on: self-hosted
-    permissions:
-      contents: read
-      packages: read 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
