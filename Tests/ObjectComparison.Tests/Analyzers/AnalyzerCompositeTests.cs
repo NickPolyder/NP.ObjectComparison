@@ -215,7 +215,7 @@ namespace ObjectComparison.Tests.Analyzers
 			
 			// Act
 			var result = sut.Analyze(originalValue, targetValue);
-
+			
 			// Assert
 			foreach (var analyzeItem in result)
 			{
