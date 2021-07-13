@@ -14,25 +14,20 @@ if($length -le 0)
     Write-Output 'No scripts to run.'
     return;
 }
-$coverageLogFile = '.\coverage.log'
-$coverletCoveragePath = '.\coverage.json';
-$coverageFormatPath = '.\coverage.opencover.xml';
-$reportGeneratorResult = '.\cover\';
-$testResultsDirectory = $PSScriptRoot +'\test-results';
+
+$coverletCoveragePath = $PSScriptRoot + '\coverage\';
+$coverageLogFile = $PSScriptRoot + '\coverage.log'
+$reportGeneratorResult = $PSScriptRoot + '\cover\';
+$testResultsDirectory = $PSScriptRoot + '\test-results';
+
+if(Test-Path $coverletCoveragePath)
+{
+    Remove-Item $coverletCoveragePath -Force -Recurse
+}
 
 if(Test-Path $coverageLogFile)
 {
     Remove-Item $coverageLogFile -Force
-}
-
-if(Test-Path $coverletCoveragePath)
-{
-    Remove-Item $coverletCoveragePath -Force
-}
-
-if(Test-Path $coverageFormatPath)
-{
-    Remove-Item $coverageFormatPath -Force
 }
 
 if(Test-Path $testResultsDirectory)
@@ -44,36 +39,44 @@ Write-Progress -Activity $activityName -Status 'Progress->' -PercentComplete 0 -
 
 $commandBuilder = [System.Text.StringBuilder]::new();
 
-for($index = 0; $index -lt $length; $index++)
-{
-    $item = $testProjects[$index];
-    
-     Write-Progress -Activity $activityName -Status 'Progress->' -PercentComplete (($index * 100) / $length) -CurrentOperation $item.Name
-    $dllName = $item.Name -replace $item.Extension, '.dll';
+$coverageFiles = @()
 
-    $dllPath = (Get-ChildItem $item.Directory.FullName -Include $dllName -Recurse -Force `
+for($index = 0; $index -lt $length; $index++)
+{	
+	$project = $testProjects[$index];
+	
+	Write-Progress -Activity $activityName -Status 'Progress->' -PercentComplete (($index * 100) / $length) -CurrentOperation $project.Name
+	
+    $dllName = $project.Name -replace $project.Extension, '.dll';
+	
+	$dllPath = (Get-ChildItem $project.Directory.FullName -Include $dllName -Recurse -Force `
     | Where-Object { $_.Directory.FullName -Match $regexConfiguration } `
     | Select -First 1).FullName;
-    
+         
     if($dllPath -ne $null -And -Not (Test-Path $dllPath))
     {
         Write-Output ''
-        Write-Warning 'Cannot find dll for:' $item.Name
+        Write-Warning 'Cannot find dll for:' $project.Name
         continue;
     }
 
+	
     [void]$commandBuilder.Append('& coverlet ' + $dllPath);
-    [void]$commandBuilder.Append(' --target "dotnet" --targetargs "test ' + $item.FullName + ' --no-build')
-    [void]$commandBuilder.Append(' -c '+ $Configuration);
-    [void]$commandBuilder.Append(' -r ' + $testResultsDirectory);
-    [void]$commandBuilder.Append(' "');   
-    [void]$commandBuilder.Append(' --merge-with ' + $coverletCoveragePath);
+    [void]$commandBuilder.Append(' --target "dotnet" --targetargs "test ' + $project.FullName + ' --no-build')
+    [void]$commandBuilder.Append(' -c ' + $Configuration);
+    [void]$commandBuilder.Append(' -r ' + $testResultsDirectory);	
+	
+	$operation = ($project.Name -replace $project.Extension, '');
+		
+    [void]$commandBuilder.Append(' --logger:trx;LogFileName=tests.' + $operation + '.trx');
+    [void]$commandBuilder.Append(' "');
 
-    if($index + 1 -eq $length)
-    {
-        [void]$commandBuilder.Append(' --format opencover');
-    }
-
+	
+	$coverageXml = $coverletCoveragePath + $operation + '.xml'
+	$coverageFiles += $coverageXml;
+	[void]$commandBuilder.Append(' --output ' + $coverageXml);
+	[void]$commandBuilder.Append(' --format cobertura ');
+	
     $command = $commandBuilder.ToString();
     
     Invoke-Expression $command | Out-File $coverageLogFile -Append
@@ -81,7 +84,14 @@ for($index = 0; $index -lt $length; $index++)
     [void]$commandBuilder.Clear();
 }
 
-& reportgenerator -reports:$coverageFormatPath -targetdir:$reportGeneratorResult | Out-File $coverageLogFile -Append
+if(Test-Path $reportGeneratorResult)
+{
+    Remove-Item $reportGeneratorResult -Force -Recurse
+}
 
+$reportsArg = [string]::Join(";", $coverageFiles)
+
+& reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult | Out-File $coverageLogFile -Append
+   
 $startIndex = $reportGeneratorResult + 'index.htm';
 & start $startIndex
