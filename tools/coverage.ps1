@@ -2,6 +2,10 @@ $Path = [System.IO.Path]::Combine((Split-Path $PSScriptRoot),"Tests")
 
 $Configuration = 'Debug';
 
+$ExcludeByAttributes = @('Obsolete', 'GeneratedCode', 'CompilerGenerated');
+
+$ExcludeByFiles = @('**/*.generated.cs', '**/*.Designer.cs');
+
 $regexConfiguration = '^*.'+$Configuration+'*.';
 
 $testProjects = (Get-ChildItem $Path -Include *Tests.csproj -Recurse -Force);
@@ -71,6 +75,15 @@ for($index = 0; $index -lt $length; $index++)
     [void]$commandBuilder.Append(' --logger:trx;LogFileName=tests.' + $operation + '.trx');
     [void]$commandBuilder.Append(' "');
 
+	foreach($item in $ExcludeByAttributes)
+    {
+        [void]$commandBuilder.Append(' --exclude-by-attribute "' + $item + '"');
+    }
+
+	foreach($item in $ExcludeByFiles)
+    {
+        [void]$commandBuilder.Append(' --exclude-by-file "' + $item + '"');
+    }
 	
 	$coverageXml = $coverletCoveragePath + $operation + '.xml'
 	$coverageFiles += $coverageXml;
