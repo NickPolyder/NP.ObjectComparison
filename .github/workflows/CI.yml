@@ -22,6 +22,7 @@ jobs:
         dotnet-version: 5.0.x
     - name: Remove github source
       run: dotnet nuget remove source github
+      continue-on-error: true
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
