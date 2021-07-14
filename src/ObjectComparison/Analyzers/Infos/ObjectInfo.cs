@@ -13,7 +13,7 @@ namespace ObjectComparison.Analyzers.Infos
 		private EqualsPredicate<TObject> _equalsPredicate;
 
 		public ObjectInfo(Func<string> getNameFunction, Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction)
-			: this(getNameFunction, getterFunction, setterAction, (origin, target) => origin.Equals(target))
+			: this(getNameFunction, getterFunction, setterAction, (origin, target) => object.Equals(origin, target))
 		{ }
 
 		public ObjectInfo(Func<string> getNameFunction,

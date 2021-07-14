@@ -13,8 +13,8 @@ namespace ObjectComparison.Analyzers.Infos
 			Func<TInstance, TArray> getterFunction,
 			Action<TInstance, TArray> setterAction)
 			: this(getNameFunction, getterFunction, setterAction, 
-				(origin, target) => origin.Equals(target),
-				(origin, target) => origin.Equals(target))
+				(origin, target) => object.Equals(origin, target),
+				(origin, target) => object.Equals(origin, target))
 		{ }
 
 		public ArrayObjectInfo(Func<string> getNameFunction,

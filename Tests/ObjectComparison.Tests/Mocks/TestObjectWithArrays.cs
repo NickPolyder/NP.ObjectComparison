@@ -16,6 +16,8 @@ namespace ObjectComparison.Tests.Mocks
 
 		public Dictionary<string, OtherTestObject> FifthProperty { get; set; }
 
+		public List<string> SixthProperty { get; set; }
+
 		public object Clone()
 		{
 			return new TestObjectWithArrays
@@ -25,6 +27,7 @@ namespace ObjectComparison.Tests.Mocks
 				ThirdProperty = ThirdProperty,
 				FourthProperty = FourthProperty?.Select(item=> (OtherTestObject)item.Clone()).ToList(),
 				FifthProperty = FifthProperty?.ToDictionary(key => key.Key, value => (OtherTestObject)value.Value.Clone()),
+				SixthProperty = SixthProperty?.Select(item => (string) item.Clone()).ToList()
 			};
 		}
 	}

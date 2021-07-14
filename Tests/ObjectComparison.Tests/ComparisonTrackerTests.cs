@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using AutoFixture;
 using ObjectComparison.Exceptions;
 using ObjectComparison.Tests.Mocks;
@@ -215,7 +216,7 @@ namespace ObjectComparison.Tests
 			sut.Original.ShouldBe(sut.Current);
 			sut.IsPatched().ShouldBeTrue();
 		}
-
+		
 		[Fact]
 		public void Reset_ShouldOverrideOriginalValue()
 		{

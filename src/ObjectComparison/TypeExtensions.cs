@@ -7,11 +7,13 @@ namespace ObjectComparison
 {
 	public static class TypeExtensions
 	{
+		private static Type _IEnumerable = typeof(IEnumerable);
+		private static Type _GenericIEnumerable = typeof(IEnumerable<>);
 		public static bool IsCollectionType(this Type type)
 		{
 			return type != typeof(string)
-			       && (typeof(IEnumerable<>).IsAssignableFrom(type)
-			           || typeof(IEnumerable).IsAssignableFrom(type));
+			       && (_GenericIEnumerable.IsAssignableFrom(type)
+			           || _IEnumerable.IsAssignableFrom(type));
 		}
 
 		public static Type GetCollectionElementType(this Type type)
@@ -25,9 +27,15 @@ namespace ObjectComparison
 			{
 				if (type.IsGenericType)
 				{
-					return type.GetInterfaces()
-						.First(interfaceType => interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-						.GetGenericArguments()[0];
+					var enumerableInterface = type.GetInterfaces()
+						.First(interfaceType => interfaceType == _IEnumerable
+						                        || (interfaceType.IsGenericType
+						                            && interfaceType.GetGenericTypeDefinition() ==
+						                            _GenericIEnumerable));
+					if (enumerableInterface.IsGenericType)
+					{
+						return enumerableInterface.GetGenericArguments()[0];
+					}
 				}
 
 				return typeof(object);

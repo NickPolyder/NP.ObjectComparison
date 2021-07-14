@@ -15,8 +15,8 @@ namespace ObjectComparison.Analyzers.Infos
 			Func<TInstance, IDictionary<TKey, TValue>> getterFunction,
 			Action<TInstance, IDictionary<TKey, TValue>> setterAction)
 			: this(getNameFunction, getterFunction, setterAction,
-				(origin, target) => origin.Equals(target),
-				(origin, target) => origin.Equals(target))
+				(origin, target) => object.Equals(origin, target),
+				(origin, target) => object.Equals(origin, target))
 		{ }
 
 		public DictionaryObjectInfo(Func<string> getNameFunction,
@@ -27,7 +27,7 @@ namespace ObjectComparison.Analyzers.Infos
 				getterFunction,
 				setterAction,
 				equalsKeyPredicate,
-				(origin, target) => origin.Equals(target))
+				(origin, target) => object.Equals(origin, target))
 		{
 		}
 

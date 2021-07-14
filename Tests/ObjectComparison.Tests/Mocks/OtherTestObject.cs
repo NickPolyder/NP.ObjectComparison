@@ -18,7 +18,7 @@ namespace ObjectComparison.Tests.Mocks
 				OtherFirstProperty = OtherFirstProperty,
 				OtherSecondProperty = OtherSecondProperty,
 				OtherThirdProperty = OtherThirdProperty,
-				OtherFourthProperty = (AnotherTestObject)OtherFourthProperty.Clone()
+				OtherFourthProperty = (AnotherTestObject)OtherFourthProperty?.Clone()
 			};
 		}
 
@@ -37,7 +37,7 @@ namespace ObjectComparison.Tests.Mocks
 			return OtherFirstProperty == other.OtherFirstProperty 
 			       && OtherSecondProperty == other.OtherSecondProperty
 			       && OtherThirdProperty.Equals(other.OtherThirdProperty)
-			       && OtherFourthProperty.Equals(other.OtherFourthProperty);
+			       && object.Equals(OtherFourthProperty, other.OtherFourthProperty);
 		}
 
 		public override bool Equals(object obj)

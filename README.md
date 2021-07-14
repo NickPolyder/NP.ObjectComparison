@@ -18,6 +18,6 @@ This repository serves as a library that will make Object Patching and diff easi
 - Make the README better
 - Make Factory extensions
 - Make a Decorator that will provide the full comparison functionality
-- 
+- Make Ignore Attributes etc
 
 
