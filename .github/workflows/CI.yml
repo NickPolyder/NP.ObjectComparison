@@ -20,6 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Remove github source
+      run: dotnet nuget remove source github
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
