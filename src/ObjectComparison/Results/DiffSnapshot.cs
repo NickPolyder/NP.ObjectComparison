@@ -11,13 +11,25 @@ namespace ObjectComparison.Results
 		public object OriginalValue { get; }
 
 		public object NewValue { get; }
-
+		
 		private DiffSnapshot(string name, object originalValue, object newValue, bool hasChanges)
 		{
 			Name = name;
 			OriginalValue = originalValue;
 			NewValue = newValue;
 			HasChanges = hasChanges;
+		}
+
+		public static DiffSnapshot Create(Action<Builder> configure)
+		{
+			if (configure == null)
+			{
+				throw new ArgumentNullException(nameof(configure));
+			}
+
+			var builder = new Builder();
+			configure(builder);
+			return builder.Build();
 		}
 
 		public class Builder
@@ -60,9 +72,9 @@ namespace ObjectComparison.Results
 				return this;
 			}
 
-			public Builder HasChanges()
+			public Builder HasChanges(bool hasChanges = true)
 			{
-				_hasChanges = true;
+				_hasChanges = hasChanges;
 				return this;
 			}
 

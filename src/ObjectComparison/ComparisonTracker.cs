@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ObjectComparison.Analyzers;
 using ObjectComparison.Exceptions;
 using ObjectComparison.Results;
@@ -37,7 +38,7 @@ namespace ObjectComparison
 				}
 			}
 		}
-
+		
 		public ComparisonTracker(TObject currentValue, Func<TObject, TObject> cloneFunc = null) : this(currentValue,
 			AnalyzerBuilder<TObject>.Build().ToComposite(), cloneFunc)
 		{ }
@@ -48,6 +49,16 @@ namespace ObjectComparison
 			_analyzer = analyzer ?? throw new ArgumentNullException(nameof(analyzer));
 			_cloneFunc = cloneFunc;
 			CloneValue();
+		}
+		
+		public IEnumerable<DiffSnapshot> GetCurrentAnalysis()
+		{
+			if (_currentAnalysis == null)
+			{
+				Analyze();
+			}
+
+			return _currentAnalysis;
 		}
 
 		public void Analyze()

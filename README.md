@@ -13,11 +13,12 @@ This repository serves as a library that will make Object Patching and diff easi
 - ~~Add Depth functionality on Diff code~~
 - ~~Maybe make a Diff functionality that can apply the patch later by calling a method ?~~ 
 - ~~Figure out how to publish alpha packages outside of nuget.org~~
-- Unit Tests
+- ~~Make a Decorator that will provide the full comparison functionality~~
+- Make Ignore Attributes etc
+- Make Factory extensions
 - Make examples and samples 
 - Make the README better
-- Make Factory extensions
-- Make a Decorator that will provide the full comparison functionality
-- Make Ignore Attributes etc
+- Unit Tests
+- Make a Memento object that will keep the history of the changes ? 
 
 
