@@ -44,7 +44,7 @@ namespace ObjectComparison
 
 		public ComparisonTracker(TObject currentValue, IObjectAnalyzer<TObject> analyzer, Func<TObject, TObject> cloneFunc = null)
 		{
-			Current = currentValue;
+			_current = currentValue;
 			_analyzer = analyzer ?? throw new ArgumentNullException(nameof(analyzer));
 			_cloneFunc = cloneFunc;
 			CloneValue();
