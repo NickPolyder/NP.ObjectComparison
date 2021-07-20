@@ -6,6 +6,10 @@ using ObjectComparison.Results;
 
 namespace ObjectComparison
 {
+	/// <summary>
+	/// An object that tracks changes for a specific instance of <typeparamref name="TObject"/>
+	/// </summary>
+	/// <typeparam name="TObject">The type that needs to be tracked.</typeparam>
 	public class ComparisonTracker<TObject>: IComparisonTracker<TObject>
 	{
 		private readonly Func<TObject, TObject> _cloneFunc;
@@ -15,6 +19,7 @@ namespace ObjectComparison
 		private bool _isOriginalSet = false;
 		private IDiffAnalysisResult _currentAnalysis;
 
+		/// <inheritdoc />
 		public TObject Original
 		{
 			get => _original;
@@ -25,6 +30,7 @@ namespace ObjectComparison
 			}
 		}
 
+		/// <inheritdoc />
 		public TObject Current
 		{
 			get => _current;
@@ -50,7 +56,8 @@ namespace ObjectComparison
 			_cloneFunc = cloneFunc;
 			CloneValue();
 		}
-		
+
+		/// <inheritdoc />
 		public IEnumerable<DiffSnapshot> GetCurrentAnalysis()
 		{
 			if (_currentAnalysis == null)
@@ -61,14 +68,16 @@ namespace ObjectComparison
 			return _currentAnalysis;
 		}
 
+		/// <inheritdoc />
 		public void Analyze()
 		{
 			_currentAnalysis = _analyzer.Analyze(Original, Current);
 		}
 
-		public bool HasChanges()
+		/// <inheritdoc />
+		public bool HasChanges(bool autoAnalyze = false)
 		{
-			if (_currentAnalysis == null)
+			if (autoAnalyze || _currentAnalysis == null)
 			{
 				Analyze();
 			}
@@ -76,11 +85,13 @@ namespace ObjectComparison
 			return _currentAnalysis.HasChanges();
 		}
 
+		/// <inheritdoc />
 		public bool IsPatched()
 		{
 			return _currentAnalysis != null && _currentAnalysis.IsPatched;
 		}
 
+		/// <inheritdoc />
 		public void Patch()
 		{
 			if (_currentAnalysis == null)
@@ -93,12 +104,14 @@ namespace ObjectComparison
 				_currentAnalysis.Patch();
 			}
 		}
-		
+
+		/// <inheritdoc />
 		public void Reset()
 		{
 			CloneValue();
 			_currentAnalysis = null;
 		}
+
 
 		private void CloneValue()
 		{

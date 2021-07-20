@@ -14,8 +14,9 @@ This repository serves as a library that will make Object Patching and diff easi
 - ~~Maybe make a Diff functionality that can apply the patch later by calling a method ?~~ 
 - ~~Figure out how to publish alpha packages outside of nuget.org~~
 - ~~Make a Decorator that will provide the full comparison functionality~~
+- ~~Add AutoAnalyze in HasChanges~~
+- ~~Make Factory extensions~~
 - Make Ignore Attributes etc
-- Make Factory extensions
 - Make examples and samples 
 - Make the README better
 - Unit Tests

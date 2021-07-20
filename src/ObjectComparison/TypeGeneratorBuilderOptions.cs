@@ -3,6 +3,10 @@ using System.Reflection;
 
 namespace ObjectComparison
 {
+	/// <summary>
+	/// Options associated with <see cref="Analyzers.AnalyzerBuilder{T}"/>
+	/// to monitor object depth.
+	/// </summary>
 	public class TypeGeneratorBuilderOptions
 	{
 		public Dictionary<PropertyInfo, int> Depth = new Dictionary<PropertyInfo, int>();
