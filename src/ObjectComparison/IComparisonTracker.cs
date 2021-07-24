@@ -19,20 +19,41 @@ namespace ObjectComparison
 		/// </summary>
 		TObject Current { get; set; }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
+		/// <returns>
+		/// A collection of the difference results from the active analysis.
+		/// </returns>
 		IEnumerable<DiffSnapshot> GetCurrentAnalysis();
 
+		/// <summary>
+		/// Analyzes the <see cref="Original"/> and <see cref="Current"/> and generates
+		/// a report of the comparison of the two objects.
+		/// <para>
+		/// The report can be retrieved by calling <seealso cref="GetCurrentAnalysis"/>
+		/// </para>
+		/// </summary>
 		void Analyze();
 
+		/// <summary>
+		/// Has the <see cref="Current"/> been changed.
+		/// </summary>
+		/// <param name="autoAnalyze">When true it will call <see cref="Analyze"/> before it analyzes the objects.</param>
+		/// <returns>True when the objects have differences, false otherwise.</returns>
 		bool HasChanges(bool autoAnalyze = false);
 
+		/// <summary>
+		/// Has the <see cref="Original"/> been patched with <see cref="Current"/> ?
+		/// </summary>
+		/// <returns>True when the object has been patched.</returns>
 		bool IsPatched();
 
+		/// <summary>
+		/// Patches the <see cref="Original"/> with the <see cref="Current"/>.
+		/// </summary>
 		void Patch();
 
+		/// <summary>
+		/// Resets the <see cref="Original"/> with the <see cref="Current"/>.
+		/// </summary>
 		void Reset();
 	}
 }
