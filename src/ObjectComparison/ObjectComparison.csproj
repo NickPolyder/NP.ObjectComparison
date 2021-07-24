@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <PackageOutputPath>../../nuget-packages</PackageOutputPath>
-    <Version>0.9.2</Version>
+    <Version>0.9.3</Version>
     <Authors>Nick Polyderopoulos</Authors>
     <Company>Nick Polyderopoulos</Company>
     <Product>Object Comparison</Product>
@@ -14,7 +14,11 @@
     <RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
     <RepositoryType>Private</RepositoryType>
     <PackageTags>comparison</PackageTags>
-    <PackageReleaseNotes>Fix issues for Blazor Web Assembly</PackageReleaseNotes>
+    <PackageReleaseNotes>- DiffSnapshot Builder now allows the has changes to be set with a boolean parameter.
+- DiffSnapshot now has a new Creation method that takes an Action that builds the Snapshot.
+- ComparisonTracker now returns the current analysis report.
+- ComparisonTracker now has an analyze flag on HasChanges so that the users can trigger the Analyze process every time.
+- AnalyzerExtesions now have easy to call methods to create an auto analyzer and comparison tracker.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
