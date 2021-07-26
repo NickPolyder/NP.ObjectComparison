@@ -82,7 +82,7 @@ namespace ObjectComparison
 				Analyze();
 			}
 
-			return _currentAnalysis.HasChanges();
+			return !IsPatched() && _currentAnalysis.HasChanges();
 		}
 
 		/// <inheritdoc />
