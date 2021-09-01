@@ -9,7 +9,7 @@
     <Product>Object Comparison</Product>
     <Description>A .net library that performs diff and patch operations on .net objects</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Copyright>Copyright (c) 2021 Nick Polyderopoulos</Copyright>
+    <Copyright>Copyright (c) $([System.DateTime]::Now.Year.ToString()) Nick Polyderopoulos</Copyright>
     <PackageProjectUrl>https://github.com/NickPolyder/ObjectComparison</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
     <RepositoryType>Private</RepositoryType>
@@ -17,6 +17,7 @@
     <PackageReleaseNotes>- ComparisonTracker Has Changes now check if the Object has been patched and returns false if it does.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
