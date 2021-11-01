@@ -1,16 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ObjectComparison.Analyzers.Settings;
 
 namespace ObjectComparison.Analyzers
 {
 	public class AnalyzerBuilder<TInstance>
 	{
-		public static IEnumerable<IObjectAnalyzer<TInstance>> Build(TypeGeneratorBuilderOptions options = null)
+		public static IEnumerable<IObjectAnalyzer<TInstance>> Build(AnalyzerSettings options = null)
 		{
-			var localOptions = options ?? new TypeGeneratorBuilderOptions();
-			var publicProperties = typeof(TInstance).GetProperties();
+			var localOptions = options ?? new AnalyzerSettings();
+			var typeToAnalyze = typeof(TInstance);
+
+			if (localOptions.SkipAnalyzeSettings.IsSkipped(typeToAnalyze))
+			{
+				yield break;
+			}
+
+			var publicProperties = typeToAnalyze.GetProperties();
 			
 			foreach (var publicProperty in publicProperties)
 			{
+				if (localOptions.SkipAnalyzeSettings.IsSkipped(publicProperty))
+				{
+					continue;
+				}
+
 				if (publicProperty.PropertyType.HasInterface(Constants.DictionaryInterfaceType))
 				{
 					var analyzer = AnalyzerSingletons.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
@@ -18,6 +32,7 @@ namespace ObjectComparison.Analyzers
 					{
 						yield return analyzer;
 					}
+
 					continue;
 				}
 
@@ -28,6 +43,7 @@ namespace ObjectComparison.Analyzers
 					{
 						yield return analyzer;
 					}
+
 					continue;
 				}
 				

@@ -223,5 +223,33 @@ namespace ObjectComparison.Tests.Analyzers
 			}
 			result.HasChanges().ShouldBeTrue();
 		}
+
+		[Fact]
+		public void Analyze_WhenThereAreSkippedValues_ShouldSkipTheAnalyzeOfTheValues()
+		{
+			// Arrange
+			var sut = new AnalyzerComposite<SkipTestObject>(AnalyzerBuilder<SkipTestObject>.Build().ToArray());
+
+			var originalValue = _fixture.Create<SkipTestObject>();
+			var targetValue = _fixture.Create<SkipTestObject>();
+
+			// Act
+			var result = sut.Analyze(originalValue, targetValue);
+			result.Patch();
+
+			// Assert
+			result.IsPatched.ShouldBeTrue();
+			result.HasChanges().ShouldBeTrue();
+			foreach (var analyzeItem in result)
+			{
+				_testOutputHelper.WriteLine($"Item Name: {analyzeItem.Name}, Has Changes: {analyzeItem.HasChanges}");
+			}
+
+			originalValue.FirstProperty.ShouldNotBe(targetValue.FirstProperty);
+			originalValue.SecondProperty.ShouldBe(targetValue.SecondProperty);
+			originalValue.ThirdProperty.ShouldBe(targetValue.ThirdProperty);
+			originalValue.FourthProperty.ShouldNotBe(targetValue.FourthProperty);
+			originalValue.FifthProperty.ShouldBe(targetValue.FifthProperty);
+		}
 	}
 }

@@ -44,11 +44,22 @@ namespace ObjectComparison
 				}
 			}
 		}
-		
+
+		/// <summary>
+		/// Constructs a Comparison Tracker with <paramref name="currentValue"/> and optionally <paramref name="cloneFunc"/>.
+		/// </summary>
+		/// <param name="currentValue">The current value to monitor.</param>
+		/// <param name="cloneFunc">The function to clone the <typeparamref name="TObject"/>.</param>
 		public ComparisonTracker(TObject currentValue, Func<TObject, TObject> cloneFunc = null) : this(currentValue,
 			AnalyzerBuilder<TObject>.Build().ToComposite(), cloneFunc)
 		{ }
 
+		/// <summary>
+		/// Constructs a Comparison Tracker with <paramref name="currentValue"/> and optionally <paramref name="cloneFunc"/>.
+		/// </summary>
+		/// <param name="currentValue">The current value to monitor.</param>
+		/// <param name="analyzer">The Analyzer.</param>
+		/// <param name="cloneFunc">The function to clone the <typeparamref name="TObject"/>.</param>
 		public ComparisonTracker(TObject currentValue, IObjectAnalyzer<TObject> analyzer, Func<TObject, TObject> cloneFunc = null)
 		{
 			_current = currentValue;
@@ -136,8 +147,18 @@ namespace ObjectComparison
 			throw new ObjectComparisonException(Resources.Errors.CannotClone);
 		}
 
+		/// <summary>
+		/// Casts to <typeparamref name="TObject" />.
+		/// </summary>
+		/// <param name="tracker"></param>
+		/// <returns></returns>
 		public static implicit operator TObject(ComparisonTracker<TObject> tracker) => tracker == null ? default : tracker.Current;
 
+		/// <summary>
+		/// Casts from <typeparamref name="TObject" />.
+		/// </summary>
+		/// <param name="currentValue"></param>
+		/// <returns></returns>
 		public static implicit operator ComparisonTracker<TObject>(TObject currentValue)
 		{
 			return new ComparisonTracker<TObject>(currentValue);

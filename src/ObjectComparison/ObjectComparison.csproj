@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <PackageOutputPath>../../nuget-packages</PackageOutputPath>
-    <Version>0.9.4</Version>
+    <Version>0.9.5</Version>
     <Authors>Nick Polyderopoulos</Authors>
     <Company>Nick Polyderopoulos</Company>
     <Product>Object Comparison</Product>
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
     <RepositoryType>Private</RepositoryType>
     <PackageTags>comparison</PackageTags>
-    <PackageReleaseNotes>- ComparisonTracker Has Changes now check if the Object has been patched and returns false if it does.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Enable ignore attribute functionality.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>

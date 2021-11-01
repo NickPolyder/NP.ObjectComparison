@@ -63,7 +63,8 @@ var comparisonTracker = new ComparisonTracker<SampleClass>(sampleInstance, sampl
 - ~~Add AutoAnalyze in HasChanges~~
 - ~~Make Factory extensions~~
 - ~~Make the README better~~
-- Make Ignore Attributes etc
+- __Make Ignore Attributes etc (Active)__
+    - Make analyzer settings take a Default factory.
 - Make examples and samples 
 - Unit Tests
 - Make a Memento object that will keep the history of the changes ? 

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Reflection;
 using ObjectComparison.Analyzers.Infos;
+using ObjectComparison.Analyzers.Settings;
 
 namespace ObjectComparison.Analyzers.Strategies
 {
 	public class ObjectAnalyzerBuilderStrategy : IAnalyzerBuilderStrategy
 	{
-		public IObjectAnalyzer<TInstance> Build<TInstance>(PropertyInfo propertyInfo, TypeGeneratorBuilderOptions options)
+		public IObjectAnalyzer<TInstance> Build<TInstance>(PropertyInfo propertyInfo, AnalyzerSettings options)
 		{
 			var objectInfo = ObjectInfoBuilder<TInstance>.Build(propertyInfo);
 
@@ -24,17 +25,17 @@ namespace ObjectComparison.Analyzers.Strategies
 		}
 
 		private static IObjectAnalyzer<TInstance> GetComplexAnalyzer<TInstance>(PropertyInfo propertyInfo, 
-			TypeGeneratorBuilderOptions options,
+			AnalyzerSettings options,
 			object objectInfo)
 		{
 			if (options != null)
 			{
-				if (options.IsAllowedDepth(propertyInfo))
+				if (options.Depth.IsAllowedDepth(propertyInfo))
 				{
 					return null;
 				}
 
-				options.Depth[propertyInfo]++;
+				options.Depth.IncreaseDepth(propertyInfo);
 			}
 
 			var builder = typeof(AnalyzerBuilder<>).MakeGenericType(propertyInfo.PropertyType);
