@@ -6,6 +6,12 @@ namespace ObjectComparison.Analyzers
 {
 	public static class ObjectAnalyzerExtensions
 	{
+		/// <summary>
+		/// Creates a Composite out of a list of Object Analyzers.
+		/// </summary>
+		/// <typeparam name="TInstance"></typeparam>
+		/// <param name="enumerable"></param>
+		/// <returns></returns>
 		public static IObjectAnalyzer<TInstance> ToComposite<TInstance>(
 			this IEnumerable<IObjectAnalyzer<TInstance>> enumerable)
 		{

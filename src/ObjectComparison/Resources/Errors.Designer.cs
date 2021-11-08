@@ -68,5 +68,14 @@ namespace ObjectComparison.Resources {
                 return ResourceManager.GetString("CannotClone", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression needs to be of type MemberExpression pointing at a property..
+        /// </summary>
+        public static string Skip_RequiresMemberExpression {
+            get {
+                return ResourceManager.GetString("Skip_RequiresMemberExpression", resourceCulture);
+            }
+        }
     }
 }

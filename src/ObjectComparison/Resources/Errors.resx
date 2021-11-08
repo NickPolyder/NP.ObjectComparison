@@ -121,4 +121,7 @@
     <value>Cannot Clone the object: {0}. Please implement ICloneable or provide clone function.</value>
     <comment>{0} = Type Name</comment>
   </data>
+  <data name="Skip_RequiresMemberExpression" xml:space="preserve">
+    <value>The expression needs to be of type MemberExpression pointing at a property.</value>
+  </data>
 </root>
