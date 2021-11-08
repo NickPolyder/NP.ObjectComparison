@@ -8,7 +8,10 @@ namespace ObjectComparison.Analyzers
 	{
 		public static IEnumerable<IObjectAnalyzer<TInstance>> Build(AnalyzerSettings options = null)
 		{
-			var localOptions = options ?? new AnalyzerSettings();
+			var localOptions = options 
+			                   ?? AnalyzerSettings.DefaultSettings.Invoke() 
+			                   ?? new AnalyzerSettings();
+
 			var typeToAnalyze = typeof(TInstance);
 
 			if (localOptions.SkipAnalyzeSettings.IsSkipped(typeToAnalyze))

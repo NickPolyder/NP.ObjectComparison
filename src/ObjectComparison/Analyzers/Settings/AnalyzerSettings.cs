@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ObjectComparison.Analyzers.Settings
 {
@@ -7,6 +8,7 @@ namespace ObjectComparison.Analyzers.Settings
 	/// </summary>
 	public class AnalyzerSettings
 	{
+		public static Func<AnalyzerSettings> DefaultSettings { get; set; } = new Func<AnalyzerSettings>(() => new AnalyzerSettings());
 		/// <summary>
 		/// Depth settings.
 		/// </summary>
