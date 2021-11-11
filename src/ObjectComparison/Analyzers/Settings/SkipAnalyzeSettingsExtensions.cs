@@ -4,13 +4,17 @@ using System.Reflection;
 
 namespace ObjectComparison.Analyzers.Settings
 {
+	/// <summary>
+	/// Extensions related to <see cref="SkipAnalyzeSettings"/>.
+	/// </summary>
 	public static class SkipAnalyzeSettingsExtensions
 	{
 		/// <summary>
 		/// Skips the property given by the <paramref name="expression"/>.
 		/// </summary>
+		/// <param name="settings"></param>
 		/// <param name="expression">A <see cref="MemberExpression"/> accessing a property.</param>
-		/// <returns></returns>
+		/// <returns>Self.</returns>
 		public static SkipAnalyzeSettings Skip<TModel, TMember>(this SkipAnalyzeSettings settings, Expression<Func<TModel, TMember>> expression)
 		{
 			if (expression?.Body is MemberExpression memberExpression 
@@ -26,7 +30,8 @@ namespace ObjectComparison.Analyzers.Settings
 		/// <summary>
 		/// Skips this <typeparamref name="TModel"/>.
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="settings"></param>
+		/// <returns>Self.</returns>
 		public static SkipAnalyzeSettings Skip<TModel>(this SkipAnalyzeSettings settings)
 		{
 			return settings.Skip(typeof(TModel));

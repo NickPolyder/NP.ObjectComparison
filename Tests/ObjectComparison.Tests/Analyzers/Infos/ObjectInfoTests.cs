@@ -3,7 +3,7 @@ using ObjectComparison.Analyzers.Infos;
 using Shouldly;
 using Xunit;
 
-namespace ObjectComparison.Tests
+namespace ObjectComparison.Tests.Analyzers.Infos
 {
 	public class ObjectInfoTests
 	{

@@ -20,14 +20,14 @@ dotnet add {PROJECT} package ObjectComparison
 
 ## Usage
 
-The simplest way to start using the library is to initialise an ComparisonTracker object.
+The simplest way to start using the library is to initialize an ComparisonTracker object.
 
 ```CSharp
 var sampleInstance = new SampleClass();
 var comparisonTracker = new ComparisonTracker<SampleClass>(sampleInstance);
 ```
 
-In order to properly use the `ComparisonTracker<T>` the `T` needs to be a class that inherits from `System.ICloneable` or make use of the `CloneFactory` delegate through the constuctor.
+In order to properly use the `ComparisonTracker<T>` the `T` needs to be a class that inherits from `System.ICloneable` or make use of the `CloneFactory` delegate through the constructor.
 
 ```CSharp
 var sampleInstance = new SampleClass();
@@ -36,7 +36,7 @@ var comparisonTracker = new ComparisonTracker<SampleClass>(sampleInstance, insta
 	 FirstName = (string)instance.FistName.Clone(),
 	 LastName = (string)instance.LastName.Clone(),
 	 Age = instance.Age, 
-         RegistrationDate = instance.RegistrationDate,		
+		 RegistrationDate = instance.RegistrationDate,		
    });
 ```
 
@@ -50,6 +50,60 @@ var sampleObjectAnalyzer = new SampleObjectAnalyzer();
 var comparisonTracker = new ComparisonTracker<SampleClass>(sampleInstance, sampleObjectAnalyzer);
 ```
 
+### Ignoring properties
+
+To ignore a property or a class there are two ways available:
+
+1. By using the attribute `[SkipAnalyze]` on a property or a class.
+
+For a property:
+
+```CSharp
+public class ToBeAnalyzed
+{
+	[SkipAnalyze]
+	public string Value { get; set; }
+}
+```
+
+
+For a class:
+
+```CSharp
+[SkipAnalyze]
+public class ToBeAnalyzed
+{	
+	public string Value { get; set; }
+}
+```
+
+
+2. By providing an initialized instance of `AnalyzerSettings`
+
+```CSharp
+var analyzerSettings = new AnalyzerSettings();
+var typeToSkip = typeof(ToBeAnalyzed);
+
+// Skipping properties
+var propertyInfo = typeToSkip.GetProperty(nameof(ToBeAnalyzed.Value));
+analyzerSettings.SkipAnalyzeSettings.Skip(propertyInfo);
+
+// OR
+analyzerSettings
+	.SkipAnalyzeSettings
+	.Skip<ToBeAnalyzed, string>(model => model.Value)
+
+
+// Skipping classes
+analyzerSettings.SkipAnalyzeSettings.Skip(typeToSkip);
+
+// OR
+analyzerSettings.SkipAnalyzeSettings.Skip<ToBeAnalyzed>();
+
+// Set the new instance
+AnalyzerSettings.DefaultSettings = () => analyzerSettings;
+
+```
 
 ## Roadmap
 
@@ -63,12 +117,10 @@ var comparisonTracker = new ComparisonTracker<SampleClass>(sampleInstance, sampl
 - ~~Add AutoAnalyze in HasChanges~~
 - ~~Make Factory extensions~~
 - ~~Make the README better~~
-- __Make Ignore Attributes etc (Active)__
-    - Make analyzer settings take a Default factory.
+- ~~Make Ignore Attributes etc~~
+	- ~~Make analyzer settings take a Default factory.~~
 - Make examples and samples 
 - Unit Tests
 - Make a Memento object that will keep the history of the changes ? 
 - Add Contribute section
 - 
-
-

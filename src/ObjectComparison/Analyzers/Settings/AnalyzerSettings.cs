@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ObjectComparison.Analyzers.Settings
 {
@@ -8,6 +7,9 @@ namespace ObjectComparison.Analyzers.Settings
 	/// </summary>
 	public class AnalyzerSettings
 	{
+		/// <summary>
+		/// A factory method that is responsible to create an initial instance of <see cref="AnalyzerSettings"/>.
+		/// </summary>
 		public static Func<AnalyzerSettings> DefaultSettings { get; set; } = new Func<AnalyzerSettings>(() => new AnalyzerSettings());
 		/// <summary>
 		/// Depth settings.
