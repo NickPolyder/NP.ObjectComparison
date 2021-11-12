@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31025.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectComparison", "src\ObjectComparison\ObjectComparison.csproj", "{84DF4F80-97F7-420B-9060-E66910D40A0F}"
 EndProject
@@ -15,11 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2DD38859
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectComparison.Tests", "Tests\ObjectComparison.Tests\ObjectComparison.Tests.csproj", "{0B567D27-2E8C-441D-81A9-B593668796C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectComparison.Common.Test.Framework", "src\ObjectComparison.Common.Test.Framework\ObjectComparison.Common.Test.Framework.csproj", "{BCA4BC95-C637-483E-B127-989D8854057C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{80678F53-3236-43B3-A870-6137C8A0E871}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Blazor.WebAssembly", "Samples\Samples.Blazor.WebAssembly\Samples.Blazor.WebAssembly.csproj", "{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Blazor.WebAssembly", "Samples\Samples.Blazor.WebAssembly\Samples.Blazor.WebAssembly.csproj", "{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{0B567D27-2E8C-441D-81A9-B593668796C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B567D27-2E8C-441D-81A9-B593668796C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B567D27-2E8C-441D-81A9-B593668796C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BCA4BC95-C637-483E-B127-989D8854057C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCA4BC95-C637-483E-B127-989D8854057C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCA4BC95-C637-483E-B127-989D8854057C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCA4BC95-C637-483E-B127-989D8854057C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}.Release|Any CPU.ActiveCfg = Release|Any CPU

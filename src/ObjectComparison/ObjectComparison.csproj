@@ -12,7 +12,7 @@
     <Copyright>Copyright (c) $([System.DateTime]::Now.Year.ToString()) Nick Polyderopoulos</Copyright>
     <PackageProjectUrl>https://github.com/NickPolyder/ObjectComparison</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
-    <RepositoryType>Private</RepositoryType>
+    <RepositoryType>git</RepositoryType>
     <PackageTags>comparison</PackageTags>
     <PackageReleaseNotes>- Enable ignore attribute functionality.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

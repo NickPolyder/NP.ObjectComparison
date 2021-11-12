@@ -119,8 +119,8 @@ AnalyzerSettings.DefaultSettings = () => analyzerSettings;
 - ~~Make the README better~~
 - ~~Make Ignore Attributes etc~~
 	- ~~Make analyzer settings take a Default factory.~~
+-  Give the option to also revert a patch (is it possible?)
+  - If these 2 work we can go one step further and keep a history of DiffAnalysisResults that can be applied or get reverted ?
+- Make a Memento object that will keep the history of the changes ? 
 - Make examples and samples 
 - Unit Tests
-- Make a Memento object that will keep the history of the changes ? 
-- Add Contribute section
-- 

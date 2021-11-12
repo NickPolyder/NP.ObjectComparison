@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<TargetFramework>net6.0</TargetFramework>
 
-    <IsPackable>false</IsPackable>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="AutoFixture" Version="4.17.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+		<PackageReference Include="Shouldly" Version="4.0.3" />
 		<PackageReference Include="coverlet.msbuild" Version="3.0.3">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,8 +24,7 @@
 		</PackageReference>
 	</ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ObjectComparison.Common.Test.Framework\ObjectComparison.Common.Test.Framework.csproj" />
-    <ProjectReference Include="..\..\src\ObjectComparison\ObjectComparison.csproj" />
+	<ProjectReference Include="..\..\src\ObjectComparison\ObjectComparison.csproj" />
   </ItemGroup>
 
 </Project>
