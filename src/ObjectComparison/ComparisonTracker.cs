@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ObjectComparison.Analyzers;
 using ObjectComparison.Exceptions;
 using ObjectComparison.Results;
@@ -18,6 +19,7 @@ namespace ObjectComparison
 		private TObject _current;
 		private bool _isOriginalSet = false;
 		private IDiffAnalysisResult _currentAnalysis;
+		private List<IComparisonHistory<TObject>> _history;
 
 		/// <inheritdoc />
 		public TObject Original
@@ -40,7 +42,7 @@ namespace ObjectComparison
 
 				if (!_isOriginalSet)
 				{
-					CloneValue();
+					CloneToOriginal();
 				}
 			}
 		}
@@ -64,8 +66,9 @@ namespace ObjectComparison
 		{
 			_current = currentValue;
 			_analyzer = analyzer ?? throw new ArgumentNullException(nameof(analyzer));
+			_history = new List<IComparisonHistory<TObject>>();
 			_cloneFunc = cloneFunc;
-			CloneValue();
+			CloneToOriginal();
 		}
 
 		/// <inheritdoc />
@@ -77,6 +80,12 @@ namespace ObjectComparison
 			}
 
 			return _currentAnalysis;
+		}
+
+		/// <inheritdoc />
+		public IEnumerable<IComparisonHistory<TObject>> GetHistory()
+		{			
+			return _history.AsEnumerable();
 		}
 
 		/// <inheritdoc />
@@ -114,34 +123,45 @@ namespace ObjectComparison
 			{
 				_currentAnalysis.Patch();
 			}
+
+			_history.Add(new ComparisonHistory<TObject>(CloneValue(), _currentAnalysis));
 		}
 
 		/// <inheritdoc />
 		public void Reset()
 		{
-			CloneValue();
+			Original = CloneValue();
 			_currentAnalysis = null;
 		}
 
+		/// <inheritdoc />
+		public void RevertTo(IComparisonHistory<TObject> history)
+		{
+			Current = history.Get();
+			Analyze();
+		}
 
-		private void CloneValue()
+		private void CloneToOriginal()
+		{
+			_history.Add(new ComparisonHistory<TObject>(CloneValue(), Enumerable.Empty<DiffSnapshot>()));
+			Original = CloneValue();
+		}
+
+		private TObject CloneValue()
 		{
 			if (_cloneFunc != null)
 			{
-				Original = _cloneFunc.Invoke(Current);
-				return;
+				return _cloneFunc.Invoke(Current);
 			}
 
 			if (Current == null)
 			{
-				Original = default;
-				return;
+				return default;
 			}
 
 			if (Current is ICloneable cloneable)
 			{
-				Original = (TObject)cloneable.Clone();
-				return;
+				return (TObject)cloneable.Clone();
 			}
 
 			throw new ObjectComparisonException(Resources.Errors.CannotClone);

@@ -25,6 +25,12 @@ namespace ObjectComparison
 		IEnumerable<DiffSnapshot> GetCurrentAnalysis();
 
 		/// <summary>
+		/// Gets the history list.
+		/// </summary>
+		/// <returns>A history object.</returns>
+		IEnumerable<IComparisonHistory<TObject>> GetHistory();
+
+		/// <summary>
 		/// Analyzes the <see cref="Original"/> and <see cref="Current"/> and generates
 		/// a report of the comparison of the two objects.
 		/// <para>
@@ -55,5 +61,11 @@ namespace ObjectComparison
 		/// Resets the <see cref="Original"/> with the <see cref="Current"/>.
 		/// </summary>
 		void Reset();
+
+		/// <summary>
+		/// Reverts this Tracker to a previous state encapsulated in <paramref name="history"/>.
+		/// </summary>
+		/// <param name="history">The history object.</param>
+		void RevertTo(IComparisonHistory<TObject> history);
 	}
 }

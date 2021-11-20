@@ -1,45 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+	<TargetFramework>netstandard2.0</TargetFramework>
 	  <PackageOutputPath>../../nuget-packages</PackageOutputPath>
-    <Version>0.9.5</Version>
-    <Authors>Nick Polyderopoulos</Authors>
-    <Company>Nick Polyderopoulos</Company>
-    <Product>Object Comparison</Product>
-    <Description>A .net library that performs diff and patch operations on .net objects</Description>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Copyright>Copyright (c) $([System.DateTime]::Now.Year.ToString()) Nick Polyderopoulos</Copyright>
-    <PackageProjectUrl>https://github.com/NickPolyder/ObjectComparison</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>comparison</PackageTags>
-    <PackageReleaseNotes>- Enable ignore attribute functionality.</PackageReleaseNotes>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<Version>0.9.6</Version>
+	<Authors>Nick Polyderopoulos</Authors>
+	<Company>Nick Polyderopoulos</Company>
+	<Product>Object Comparison</Product>
+	<Description>A .net library that performs diff and patch operations on .net objects</Description>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<Copyright>Copyright (c) $([System.DateTime]::Now.Year.ToString()) Nick Polyderopoulos</Copyright>
+	<PackageProjectUrl>https://github.com/NickPolyder/ObjectComparison</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/NickPolyder/ObjectComparison</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>comparison</PackageTags>
+	<PackageReleaseNotes>- Introduce History information for Comparison Tracking.
+- Introduce Revert functionality for Comparison Tracking.
+	</PackageReleaseNotes>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+	<None Include="..\..\LICENSE">
+	  <Pack>True</Pack>
+	  <PackagePath></PackagePath>
+	</None>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Errors.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Errors.resx</DependentUpon>
-    </Compile>
+	<Compile Update="Resources\Errors.Designer.cs">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Errors.resx</DependentUpon>
+	</Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Errors.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+	<EmbeddedResource Update="Resources\Errors.resx">
+	  <Generator>PublicResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+	</EmbeddedResource>
   </ItemGroup>
 
 </Project>
