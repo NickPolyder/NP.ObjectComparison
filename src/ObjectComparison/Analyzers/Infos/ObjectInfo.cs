@@ -12,10 +12,24 @@ namespace ObjectComparison.Analyzers.Infos
 		private readonly Action<TInstance, TObject> _setterAction;
 		private EqualsPredicate<TObject> _equalsPredicate;
 
+		/// <summary>
+		/// Construct this object.
+		/// </summary>
+		/// <param name="getNameFunction"></param>
+		/// <param name="getterFunction"></param>
+		/// <param name="setterAction"></param>
 		public ObjectInfo(Func<string> getNameFunction, Func<TInstance, TObject> getterFunction, Action<TInstance, TObject> setterAction)
 			: this(getNameFunction, getterFunction, setterAction, (origin, target) => object.Equals(origin, target))
 		{ }
 
+		/// <summary>
+		/// Construct this object.
+		/// </summary>
+		/// <param name="getNameFunction"></param>
+		/// <param name="getterFunction"></param>
+		/// <param name="setterAction"></param>
+		/// <param name="equalsPredicate"></param>
+		/// <exception cref="ArgumentNullException"></exception>
 		public ObjectInfo(Func<string> getNameFunction,
 			Func<TInstance, TObject> getterFunction,
 			Action<TInstance, TObject> setterAction,
@@ -27,26 +41,51 @@ namespace ObjectComparison.Analyzers.Infos
 			_equalsPredicate = equalsPredicate ?? throw new ArgumentNullException(nameof(equalsPredicate));
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="equalsPredicate"></param>
+		/// <exception cref="ArgumentNullException"></exception>
 		public void SetEqualsPredicate(EqualsPredicate<TObject> equalsPredicate)
 		{
 			_equalsPredicate = equalsPredicate ?? throw new ArgumentNullException(nameof(equalsPredicate));
 		}
 
+		/// <summary>
+		/// Gets the name of the object.
+		/// </summary>
+		/// <returns></returns>
 		public string GetName()
 		{
 			return _getNameFunction();
 		}
 
+		/// <summary>
+		/// Gets the object for this <paramref name="instance"/>.
+		/// </summary>
+		/// <param name="instance"></param>
+		/// <returns></returns>
 		public TObject Get(TInstance instance)
 		{
 			return _getterFunction(instance);
 		}
 
+		/// <summary>
+		/// Sets <paramref name="targetValue"/> to <paramref name="originalInstance"/>.
+		/// </summary>
+		/// <param name="originalInstance"></param>
+		/// <param name="targetValue"></param>
 		public void Set(TInstance originalInstance, TObject targetValue)
 		{
 			_setterAction(originalInstance, targetValue);
 		}
 
+		/// <summary>
+		/// Is <paramref name="originalValue"/> equal to <paramref name="targetValue"/>.
+		/// </summary>
+		/// <param name="originalValue"></param>
+		/// <param name="targetValue"></param>
+		/// <returns></returns>
 		public bool IsEqual(TObject originalValue, TObject targetValue)
 		{
 			return _equalsPredicate(originalValue, targetValue);

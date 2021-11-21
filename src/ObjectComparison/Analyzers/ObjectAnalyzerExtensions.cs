@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace ObjectComparison.Analyzers
 {
+	/// <summary>
+	/// Extensions for <see cref="IObjectAnalyzer{TInstance}" />.
+	/// </summary>
 	public static class ObjectAnalyzerExtensions
 	{
 		/// <summary>

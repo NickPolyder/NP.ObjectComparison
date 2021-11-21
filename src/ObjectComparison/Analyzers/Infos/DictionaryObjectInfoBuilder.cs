@@ -5,8 +5,13 @@ using System.Reflection;
 
 namespace ObjectComparison.Analyzers.Infos
 {
+	/// <summary>
+	/// DictionaryObjectInfo Builder.
+	/// </summary>
+	/// <typeparam name="TInstance"></typeparam>
 	public class DictionaryObjectInfoBuilder<TInstance>
 	{
+		/// <returns>A built <see cref="DictionaryObjectInfo{TInstance, TKey, TValue}"/>.</returns>
 		public static object Build(PropertyInfo publicProperty)
 		{
 			var genericParameters = publicProperty.PropertyType.GetGenericArguments();

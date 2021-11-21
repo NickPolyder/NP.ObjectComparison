@@ -5,8 +5,18 @@ using ObjectComparison.Analyzers.Settings;
 
 namespace ObjectComparison.Analyzers.Strategies
 {
+	/// <summary>
+	/// The strategy that builds: <see cref="ArrayAnalyzer{TInstance, TArray, TArrayOf}"/>.
+	/// </summary>
 	public class ArrayAnalyzerBuilderStrategy : IAnalyzerBuilderStrategy
 	{
+		/// <summary>
+		/// The strategy that builds: <see cref="ArrayAnalyzer{TInstance, TArray, TArrayOf}"/>.
+		/// </summary>
+		/// <typeparam name="TInstance">The instance this analyzer is for.</typeparam>
+		/// <param name="propertyInfo">The property of the <typeparamref name="TInstance"/> to be analyzed.</param>
+		/// <param name="options">Options related to this analyzer.</param>
+		/// <returns>The <see cref="ArrayAnalyzer{TInstance, TArray, TArrayOf}"/>.</returns>
 		public IObjectAnalyzer<TInstance> Build<TInstance>(PropertyInfo propertyInfo, AnalyzerSettings options)
 		{
 			var arrayOf = propertyInfo.PropertyType.GetCollectionElementType();

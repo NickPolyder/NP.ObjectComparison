@@ -1,11 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ObjectComparison.Analyzers.Settings;
 
 namespace ObjectComparison.Analyzers
 {
+	/// <summary>
+	/// A generic analyzer builder
+	/// </summary>
+	/// <typeparam name="TInstance">The object type to be analyzed.</typeparam>
 	public class AnalyzerBuilder<TInstance>
 	{
+		/// <summary>
+		/// Builds an Analyzer for the <typeparamref name="TInstance"/>.
+		/// </summary>
+		/// <param name="options">The options for this build.</param>
+		/// <returns>A built Analyzer.</returns>
 		public static IEnumerable<IObjectAnalyzer<TInstance>> Build(AnalyzerSettings options = null)
 		{
 			var localOptions = options 
@@ -30,7 +38,7 @@ namespace ObjectComparison.Analyzers
 
 				if (publicProperty.PropertyType.HasInterface(Constants.DictionaryInterfaceType))
 				{
-					var analyzer = AnalyzerSingletons.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
+					var analyzer = AnalyzerBuildStrategies.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
 					if (analyzer != null)
 					{
 						yield return analyzer;
@@ -41,7 +49,7 @@ namespace ObjectComparison.Analyzers
 
 				if (publicProperty.PropertyType.IsCollectionType())
 				{
-					var analyzer = AnalyzerSingletons.ArrayBuilderStrategy.Build<TInstance>(publicProperty);
+					var analyzer = AnalyzerBuildStrategies.ArrayBuilderStrategy.Build<TInstance>(publicProperty);
 					if (analyzer != null)
 					{
 						yield return analyzer;
@@ -50,7 +58,7 @@ namespace ObjectComparison.Analyzers
 					continue;
 				}
 				
-				var objectAnalyzer =  AnalyzerSingletons.ObjectBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
+				var objectAnalyzer =  AnalyzerBuildStrategies.ObjectBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
 				if (objectAnalyzer != null)
 				{
 					yield return objectAnalyzer;

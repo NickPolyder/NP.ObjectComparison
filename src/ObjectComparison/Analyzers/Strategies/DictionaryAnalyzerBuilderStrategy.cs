@@ -5,8 +5,18 @@ using ObjectComparison.Analyzers.Settings;
 
 namespace ObjectComparison.Analyzers.Strategies
 {
+	/// <summary>
+	/// The strategy that builds: <see cref="DictionaryAnalyzer{TInstance, TKey, TValue}"/>.
+	/// </summary>
 	public class DictionaryAnalyzerBuilderStrategy : IAnalyzerBuilderStrategy
 	{
+		/// <summary>
+		/// The strategy that builds: <see cref="DictionaryAnalyzer{TInstance, TKey, TValue}"/>.
+		/// </summary>
+		/// <typeparam name="TInstance">The instance this analyzer is for.</typeparam>
+		/// <param name="propertyInfo">The property of the <typeparamref name="TInstance"/> to be analyzed.</param>
+		/// <param name="options">Options related to this analyzer.</param>
+		/// <returns>The <see cref="DictionaryAnalyzer{TInstance, TKey, TValue}"/>.</returns>
 		public IObjectAnalyzer<TInstance> Build<TInstance>(PropertyInfo propertyInfo, AnalyzerSettings options)
 		{
 			var genericParameters = propertyInfo.PropertyType.GetGenericArguments();

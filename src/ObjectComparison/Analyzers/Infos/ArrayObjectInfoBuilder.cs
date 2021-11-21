@@ -4,8 +4,13 @@ using System.Reflection;
 
 namespace ObjectComparison.Analyzers.Infos
 {
+	/// <summary>
+	/// ArrayObjectInfoBuilder Builder.
+	/// </summary>
+	/// <typeparam name="TInstance"></typeparam>
 	public class ArrayObjectInfoBuilder<TInstance>
 	{
+		/// <returns>A built <see cref="ArrayObjectInfo{TInstance, TArray, TArrayOf}"/>.</returns>
 		public static object Build(PropertyInfo publicProperty)
 		{
 			var instanceParam = Expression.Parameter(typeof(TInstance), "instance");

@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace ObjectComparison
 {
+	/// <summary>
+	/// Extensions for <see cref="Type"/>.
+	/// </summary>
 	public static class TypeExtensions
 	{
 		private static Type _IEnumerable = typeof(IEnumerable);

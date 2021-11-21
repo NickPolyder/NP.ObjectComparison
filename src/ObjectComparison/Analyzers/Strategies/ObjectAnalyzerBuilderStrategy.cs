@@ -5,8 +5,18 @@ using ObjectComparison.Analyzers.Settings;
 
 namespace ObjectComparison.Analyzers.Strategies
 {
+	/// <summary>
+	/// The strategy that builds: <see cref="ObjectAnalyzer{TInstance, TObject}"/>.
+	/// </summary>
 	public class ObjectAnalyzerBuilderStrategy : IAnalyzerBuilderStrategy
 	{
+		/// <summary>
+		/// The strategy that builds: <see cref="ObjectAnalyzer{TInstance, TObject}"/>.
+		/// </summary>
+		/// <typeparam name="TInstance">The instance this analyzer is for.</typeparam>
+		/// <param name="propertyInfo">The property of the <typeparamref name="TInstance"/> to be analyzed.</param>
+		/// <param name="options">Options related to this analyzer.</param>
+		/// <returns>The <see cref="ObjectAnalyzer{TInstance, TObject}"/>.</returns>
 		public IObjectAnalyzer<TInstance> Build<TInstance>(PropertyInfo propertyInfo, AnalyzerSettings options)
 		{
 			var objectInfo = ObjectInfoBuilder<TInstance>.Build(propertyInfo);

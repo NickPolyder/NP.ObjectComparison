@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace ObjectComparison.Results
 {
+	/// <summary>
+	/// Extensions for <see cref="DiffSnapshot"/>.
+	/// </summary>
 	public static class DiffSnapshotExtensions
 	{
 		/// <summary>

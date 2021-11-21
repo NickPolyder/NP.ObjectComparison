@@ -6,15 +6,30 @@ using ObjectComparison.Results;
 
 namespace ObjectComparison.Analyzers
 {
+	/// <summary>
+	/// Abstract functionality of array analyzers.
+	/// </summary>
+	/// <typeparam name="TInstance"></typeparam>
+	/// <typeparam name="TArray"></typeparam>
+	/// <typeparam name="TArrayOf"></typeparam>
 	public abstract class BaseArrayAnalyzer<TInstance, TArray, TArrayOf> : IObjectAnalyzer<TInstance>
 	{
+		/// <summary>
+		/// The object info for this Dictionary.
+		/// </summary>
 		protected readonly ArrayObjectInfo<TInstance, TArray, TArrayOf> ObjectInfo;
 
+		/// <summary>
+		/// Constructs this object.
+		/// </summary>
+		/// <param name="objectInfo"></param>
+		/// <exception cref="ArgumentNullException">When the <paramref name="objectInfo"/> is null.</exception>
 		protected BaseArrayAnalyzer(ArrayObjectInfo<TInstance, TArray, TArrayOf> objectInfo)
 		{
 			ObjectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
 
+		/// <inheritdoc />
 		public virtual IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
 			var diffAnalysisResult = new DiffAnalysisResult();
@@ -48,6 +63,13 @@ namespace ObjectComparison.Analyzers
 			return diffAnalysisResult;
 		}
 
+
+		/// <summary>
+		/// Handles deleted items.
+		/// </summary>
+		/// <param name="originalArray"></param>
+		/// <param name="targetArray"></param>
+		/// <returns>The list of <see cref="DiffSnapshot"/> related to the deleted items.</returns>
 		protected virtual IEnumerable<DiffSnapshot> HandleDeletedItems(TArrayOf[] originalArray, TArrayOf[] targetArray)
 		{
 			if (originalArray.Length <= targetArray.Length)
@@ -68,6 +90,12 @@ namespace ObjectComparison.Analyzers
 			}
 		}
 
+		/// <summary>
+		/// Handles added items.
+		/// </summary>
+		/// <param name="originalArray"></param>
+		/// <param name="targetArray"></param>
+		/// <returns>The list of <see cref="DiffSnapshot"/> related to the added items.</returns>
 		protected virtual IEnumerable<DiffSnapshot> HandleAddedItems(TArrayOf[] originalArray, TArrayOf[] targetArray)
 		{
 			if (originalArray.Length >= targetArray.Length)
@@ -88,6 +116,12 @@ namespace ObjectComparison.Analyzers
 			}
 		}
 
+		/// <summary>
+		/// Handles modified items.
+		/// </summary>
+		/// <param name="originalArray"></param>
+		/// <param name="targetArray"></param>
+		/// <returns>The list of <see cref="DiffSnapshot"/> related to the modified items.</returns>
 		protected abstract IEnumerable<DiffSnapshot> HandleModifiedItems(TArrayOf[] originalArray, TArrayOf[] targetArray);
 	}
 }

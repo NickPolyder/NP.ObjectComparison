@@ -1,19 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ObjectComparison.Analyzers.Infos;
 using ObjectComparison.Results;
 
 namespace ObjectComparison.Analyzers
 {
+	/// <summary>
+	/// Abstract functionality of dictionary analyzers.
+	/// </summary>
+	/// <typeparam name="TInstance"></typeparam>
+	/// <typeparam name="TKey"></typeparam>
+	/// <typeparam name="TValue"></typeparam>
 	public abstract class BaseDictionaryAnalyzer<TInstance, TKey, TValue> : IObjectAnalyzer<TInstance>
 	{
+		/// <summary>
+		/// The object info for this Dictionary.
+		/// </summary>
 		protected readonly DictionaryObjectInfo<TInstance, TKey, TValue> ObjectInfo;
 
+		/// <summary>
+		/// Constructs this object.
+		/// </summary>
+		/// <param name="objectInfo"></param>
+		/// <exception cref="ArgumentNullException">When the <paramref name="objectInfo"/> is null.</exception>
 		protected BaseDictionaryAnalyzer(DictionaryObjectInfo<TInstance, TKey, TValue> objectInfo)
 		{
-			ObjectInfo = objectInfo;
+			ObjectInfo = objectInfo ?? throw new ArgumentNullException(nameof(objectInfo));
 		}
 
+		/// <inheritdoc />
 		public IDiffAnalysisResult Analyze(TInstance originalInstance, TInstance targetInstance)
 		{
 			var diffAnalysisResult = new DiffAnalysisResult();
@@ -47,6 +63,12 @@ namespace ObjectComparison.Analyzers
 			return diffAnalysisResult;
 		}
 
+		/// <summary>
+		/// Handles deleted items.
+		/// </summary>
+		/// <param name="original"></param>
+		/// <param name="target"></param>
+		/// <returns>The list of <see cref="DiffSnapshot"/> related to the deleted items.</returns>
 		protected virtual IEnumerable<DiffSnapshot> HandleDeletedItems(IDictionary<TKey, TValue> original, IDictionary<TKey, TValue> target)
 		{
 			var deletedKeys = original.Keys
@@ -71,6 +93,12 @@ namespace ObjectComparison.Analyzers
 			}
 		}
 
+		/// <summary>
+		/// Handles added items.
+		/// </summary>
+		/// <param name="original"></param>
+		/// <param name="target"></param>
+		/// <returns>The list of <see cref="DiffSnapshot"/> related to the added items.</returns>
 		protected virtual IEnumerable<DiffSnapshot> HandleAddedItems(IDictionary<TKey, TValue> original, IDictionary<TKey, TValue> target)
 		{
 			var addedKeys = target.Keys
@@ -96,6 +124,12 @@ namespace ObjectComparison.Analyzers
 			}
 		}
 
+		/// <summary>
+		/// Handles modified items.
+		/// </summary>
+		/// <param name="original"></param>
+		/// <param name="target"></param>
+		/// <returns>The list of <see cref="DiffSnapshot"/> related to the modified items.</returns>
 		protected abstract IEnumerable<DiffSnapshot> HandleModifiedItems(IDictionary<TKey, TValue> original, IDictionary<TKey, TValue> target);
 	}
 }
