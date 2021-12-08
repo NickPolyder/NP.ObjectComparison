@@ -1,8 +1,8 @@
-# ObjectComparison
-[![CI Build](https://github.com/NickPolyder/ObjectComparison/actions/workflows/CI.yml/badge.svg)](https://github.com/NickPolyder/ObjectComparison/actions/workflows/CI.yml)
-[![CD Build](https://github.com/NickPolyder/ObjectComparison/actions/workflows/CD.yml/badge.svg)](https://github.com/NickPolyder/ObjectComparison/actions/workflows/CD.yml)
+# NP.ObjectComparison
+[![CI Build](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CI.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CI.yml)
+[![CD Build](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CD.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CD.yml)
 
-The ObjectComparison library provides object difference and patching functionality through .NET API.
+The NP.ObjectComparison library provides object difference and patching functionality through .NET API.
 
 ## Installation
 
@@ -15,7 +15,7 @@ dotnet nuget add source --username {USERNAME} --password {PAT} --store-password-
 then you can install it to your project with:
 
 ```cmd
-dotnet add {PROJECT} package ObjectComparison
+dotnet add {PROJECT} package NP.ObjectComparison
 ```
 
 ## Usage
