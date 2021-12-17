@@ -122,5 +122,7 @@ AnalyzerSettings.DefaultSettings = () => analyzerSettings;
 -  Give the option to also revert a patch (is it possible?)
   - If these 2 work we can go one step further and keep a history of DiffAnalysisResults that can be applied or get reverted ?
 - Make a Memento object that will keep the history of the changes ? 
+- Make the Comparison Tracker to have an index that will return the change tracking of that field like (ComparisonTracker["path.to.property"]) 
+- Make the comparison tracker to make use of the WeakReference class.
 - Make examples and samples 
 - Unit Tests
