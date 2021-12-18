@@ -23,7 +23,7 @@ namespace NP.ObjectComparison.Analyzers.Strategies
 
 			var objectInfo = ArrayObjectInfoBuilder<TInstance>.Build(propertyInfo);
 
-			if (Type.GetTypeCode(arrayOf) == TypeCode.Object)
+			if (Type.GetTypeCode(arrayOf) == TypeCode.Object && !arrayOf.IsNullable())
 			{
 				return GetComplexAnalyzer<TInstance>(propertyInfo, options, arrayOf, objectInfo);
 			}

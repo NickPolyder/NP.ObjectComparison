@@ -27,7 +27,7 @@ namespace NP.ObjectComparison.Analyzers.Strategies
 
 			var objectInfo = DictionaryObjectInfoBuilder<TInstance>.Build(propertyInfo);
 
-			if (Type.GetTypeCode(valueType) == TypeCode.Object)
+			if (Type.GetTypeCode(valueType) == TypeCode.Object && !valueType.IsNullable())
 			{
 				return GetComplexAnalyzer<TInstance>(propertyInfo, options, keyType, valueType, objectInfo);
 			}

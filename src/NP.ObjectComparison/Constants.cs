@@ -13,7 +13,6 @@ namespace NP.ObjectComparison
 		/// </summary>
 		public static readonly Type DictionaryInterfaceType = typeof(IDictionary<,>);
 
-
 		/// <summary>
 		/// Maximum Reference Depth for objects.
 		/// </summary>

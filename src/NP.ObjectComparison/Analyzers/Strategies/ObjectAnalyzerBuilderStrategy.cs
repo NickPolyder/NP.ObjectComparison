@@ -21,7 +21,7 @@ namespace NP.ObjectComparison.Analyzers.Strategies
 		{
 			var objectInfo = ObjectInfoBuilder<TInstance>.Build(propertyInfo);
 
-			if (Type.GetTypeCode(propertyInfo.PropertyType) == TypeCode.Object)
+			if (Type.GetTypeCode(propertyInfo.PropertyType) == TypeCode.Object && !propertyInfo.PropertyType.IsNullable())
 			{
 				return GetComplexAnalyzer<TInstance>(propertyInfo, options, objectInfo);
 			}
@@ -34,7 +34,7 @@ namespace NP.ObjectComparison.Analyzers.Strategies
 			return (IObjectAnalyzer<TInstance>)constructorInfo.Invoke(new[] { objectInfo });
 		}
 
-		private static IObjectAnalyzer<TInstance> GetComplexAnalyzer<TInstance>(PropertyInfo propertyInfo, 
+		private static IObjectAnalyzer<TInstance> GetComplexAnalyzer<TInstance>(PropertyInfo propertyInfo,
 			AnalyzerSettings options,
 			object objectInfo)
 		{
@@ -51,14 +51,14 @@ namespace NP.ObjectComparison.Analyzers.Strategies
 			var builder = typeof(AnalyzerBuilder<>).MakeGenericType(propertyInfo.PropertyType);
 
 			var analyzers = builder.GetMethod(nameof(AnalyzerBuilder<TInstance>.Build))
-				.Invoke(null, new object[] {options});
+				.Invoke(null, new object[] { options });
 
 			var constructorInfo =
 				typeof(ComplexObjectAnalyzer<,>)
 					.MakeGenericType(typeof(TInstance), propertyInfo.PropertyType)
 					.GetConstructors()[0];
 
-			return (IObjectAnalyzer<TInstance>) constructorInfo.Invoke(new[] { objectInfo, analyzers });
+			return (IObjectAnalyzer<TInstance>)constructorInfo.Invoke(new[] { objectInfo, analyzers });
 		}
 	}
 }

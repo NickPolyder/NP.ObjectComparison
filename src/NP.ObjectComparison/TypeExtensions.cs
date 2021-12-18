@@ -21,8 +21,8 @@ namespace NP.ObjectComparison
 		public static bool IsCollectionType(this Type type)
 		{
 			return type != typeof(string)
-			       && (_GenericIEnumerable.IsAssignableFrom(type)
-			           || _IEnumerable.IsAssignableFrom(type));
+				   && (_GenericIEnumerable.IsAssignableFrom(type)
+					   || _IEnumerable.IsAssignableFrom(type));
 		}
 
 		/// <summary>
@@ -43,9 +43,9 @@ namespace NP.ObjectComparison
 				{
 					var enumerableInterface = type.GetInterfaces()
 						.First(interfaceType => interfaceType == _IEnumerable
-						                        || (interfaceType.IsGenericType
-						                            && interfaceType.GetGenericTypeDefinition() ==
-						                            _GenericIEnumerable));
+												|| (interfaceType.IsGenericType
+													&& interfaceType.GetGenericTypeDefinition() ==
+													_GenericIEnumerable));
 					if (enumerableInterface.IsGenericType)
 					{
 						return enumerableInterface.GetGenericArguments()[0];
@@ -79,9 +79,20 @@ namespace NP.ObjectComparison
 		{
 
 			return interfaceType.IsAssignableFrom(@thisType) ||
-			       @thisType.GetInterfaces().Any(item => item == interfaceType
-			                                             || (item.IsGenericType
-			                                                 && item.GetGenericTypeDefinition() == interfaceType));
+				   @thisType.GetInterfaces().Any(item => item == interfaceType
+														 || (item.IsGenericType
+															 && item.GetGenericTypeDefinition() == interfaceType));
+		}
+
+		/// <summary>
+		/// Is this type a <see cref="Nullable{T}"/> ?
+		/// </summary>
+		/// <param name="thisType"></param>
+		/// <returns></returns>
+		public static bool IsNullable(this Type @thisType)
+		{
+			return @thisType.IsGenericType
+				&& @thisType.GetGenericTypeDefinition() == typeof(Nullable<>);
 		}
 	}
 }

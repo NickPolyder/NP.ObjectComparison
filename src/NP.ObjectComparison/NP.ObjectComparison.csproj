@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
 	<PackageOutputPath>../../nuget-packages</PackageOutputPath>
-	<Version>0.9.7</Version>
+	<Version>0.9.8</Version>
 	<Authors>Nick Polyderopoulos</Authors>
 	<Company>Nick Polyderopoulos</Company>
 	<Product>Object Comparison</Product>
@@ -14,7 +14,7 @@
 	<RepositoryUrl>https://github.com/NickPolyder/NP.ObjectComparison</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
 	<PackageTags>comparison</PackageTags>
-	<PackageReleaseNotes>Move library and repository.</PackageReleaseNotes>
+	<PackageReleaseNotes>Fix for issue #1 Nullable properties are treated as complex objects.</PackageReleaseNotes>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>

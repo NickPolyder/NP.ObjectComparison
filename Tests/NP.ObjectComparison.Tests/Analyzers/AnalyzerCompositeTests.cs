@@ -251,5 +251,23 @@ namespace NP.ObjectComparison.Tests.Analyzers
 			originalValue.FourthProperty.ShouldNotBe(targetValue.FourthProperty);
 			originalValue.FifthProperty.ShouldBe(targetValue.FifthProperty);
 		}
+
+
+		[Fact]
+		public void Analyze_WhenThereIsANullableValue_ShouldNotThrowException()
+		{
+			// Arrange
+			var sut = new AnalyzerComposite<TestObjectWithNullable>(AnalyzerBuilder<TestObjectWithNullable>.Build().ToArray());
+
+			var originalValue = _fixture.Create<TestObjectWithNullable>();
+			
+			var targetValue = _fixture.Create<TestObjectWithNullable>();
+
+			// Act
+			var result = Record.Exception(()=> sut.Analyze(originalValue, targetValue));
+
+			// Assert
+			result.ShouldBeNull();
+		}
 	}
 }
