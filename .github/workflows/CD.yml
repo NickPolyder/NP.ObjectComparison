@@ -16,6 +16,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
   publish:
+   needs: build
    runs-on: self-hosted
    permissions:
       packages: write 
