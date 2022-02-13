@@ -6,7 +6,7 @@ $ExcludeByAttributes = @('Obsolete', 'GeneratedCode', 'CompilerGenerated');
 
 $ExcludeByFiles = @('**/*.generated.cs', '**/*.Designer.cs');
 
-$regexConfiguration = '^*.'+$Configuration+'*.';
+$regexConfiguration = '^*.\\bin\\'+$Configuration+'*.';
 
 $testProjects = (Get-ChildItem $Path -Include *Tests.csproj -Recurse -Force);
 
@@ -55,8 +55,9 @@ for($index = 0; $index -lt $length; $index++)
 	
 	$dllPath = (Get-ChildItem $project.Directory.FullName -Include $dllName -Recurse -Force `
     | Where-Object { $_.Directory.FullName -Match $regexConfiguration } `
+    | Where-Object { $_.Directory.FullName -NotMatch 'ref' } `
     | Select -First 1).FullName;
-         
+             
     if($dllPath -ne $null -And -Not (Test-Path $dllPath))
     {
         Write-Output ''

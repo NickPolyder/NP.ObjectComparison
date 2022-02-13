@@ -19,7 +19,7 @@ namespace NP.ObjectComparison
 		private TObject _current;
 		private bool _isOriginalSet = false;
 		private IDiffAnalysisResult _currentAnalysis;
-		private List<IComparisonHistory<TObject>> _history;
+		private readonly List<IComparisonHistory<TObject>> _history;
 
 		/// <inheritdoc />
 		public TObject Original
@@ -124,13 +124,20 @@ namespace NP.ObjectComparison
 				_currentAnalysis.Patch();
 			}
 
-			_history.Add(new ComparisonHistory<TObject>(CloneValue(), _currentAnalysis));
+			_history.Add(new ComparisonHistory<TObject>(CloneCurrentValue(), _currentAnalysis));
 		}
 
 		/// <inheritdoc />
-		public void Reset()
+		public void Reset(bool toCurrent = false)
 		{
-			Original = CloneValue();
+			if (toCurrent)
+			{
+				Original = CloneValue(Current);
+			}
+			else
+			{
+				Current = CloneValue(Original);
+			}
 			_currentAnalysis = null;
 		}
 
@@ -143,23 +150,25 @@ namespace NP.ObjectComparison
 
 		private void CloneToOriginal()
 		{
-			_history.Add(new ComparisonHistory<TObject>(CloneValue(), Enumerable.Empty<DiffSnapshot>()));
-			Original = CloneValue();
+			_history.Add(new ComparisonHistory<TObject>(CloneCurrentValue(), Enumerable.Empty<DiffSnapshot>()));
+			Original = CloneCurrentValue();
 		}
 
-		private TObject CloneValue()
+		private TObject CloneCurrentValue() => CloneValue(Current);
+
+		private TObject CloneValue(TObject value)
 		{
 			if (_cloneFunc != null)
 			{
-				return _cloneFunc.Invoke(Current);
+				return _cloneFunc.Invoke(value);
 			}
 
-			if (Current == null)
+			if (value == null)
 			{
 				return default;
 			}
 
-			if (Current is ICloneable cloneable)
+			if (value is ICloneable cloneable)
 			{
 				return (TObject)cloneable.Clone();
 			}

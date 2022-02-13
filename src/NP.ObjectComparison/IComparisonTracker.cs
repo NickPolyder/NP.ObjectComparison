@@ -58,9 +58,11 @@ namespace NP.ObjectComparison
 		void Patch();
 
 		/// <summary>
-		/// Resets the <see cref="Original"/> with the <see cref="Current"/>.
+		/// Resets the values based on <paramref name="toCurrent"/>.
 		/// </summary>
-		void Reset();
+		/// <param name="toCurrent">When true <see cref="Current"/> is copied to <seealso cref="Original"/>.
+		/// Otherwise <see cref="Original"/> is copied to <seealso cref="Current"/>.</param>
+		void Reset(bool toCurrent = false);
 
 		/// <summary>
 		/// Reverts this Tracker to a previous state encapsulated in <paramref name="history"/>.

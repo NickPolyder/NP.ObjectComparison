@@ -9,7 +9,7 @@ The NP.ObjectComparison library provides object difference and patching function
 In order to install this package you first need to add the package source:
 
 ```cmd
-dotnet nuget add source --username {USERNAME} --password {PAT} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/NickPolyder/index.json"
+dotnet nuget add source --name github "https://nuget.pkg.github.com/NickPolyder/index.json"
 ```
 
 then you can install it to your project with:
@@ -119,9 +119,9 @@ AnalyzerSettings.DefaultSettings = () => analyzerSettings;
 - ~~Make the README better~~
 - ~~Make Ignore Attributes etc~~
 	- ~~Make analyzer settings take a Default factory.~~
--  Give the option to also revert a patch (is it possible?)
-  - If these 2 work we can go one step further and keep a history of DiffAnalysisResults that can be applied or get reverted ?
-- Make a Memento object that will keep the history of the changes ? 
+-  ~~Give the option to also revert a patch (is it possible?)~~
+   - ~~If these 2 work we can go one step further and keep a history of DiffAnalysisResults that can be applied or get reverted ?~~
+- ~~Make a Memento object that will keep the history of the changes ?~~
 - Make the Comparison Tracker to have an index that will return the change tracking of that field like (ComparisonTracker["path.to.property"]) 
 - Make the comparison tracker to make use of the WeakReference class.
 - Make examples and samples 
