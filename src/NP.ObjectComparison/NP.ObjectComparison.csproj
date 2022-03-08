@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
 	<PackageOutputPath>../../nuget-packages</PackageOutputPath>
-	<Version>0.9.8.1</Version>
+	<Version>0.9.8.2</Version>
 	<Authors>Nick Polyderopoulos</Authors>
 	<Company>Nick Polyderopoulos</Company>
 	<Product>Object Comparison</Product>
@@ -14,16 +14,21 @@
 	<RepositoryUrl>https://github.com/NickPolyder/NP.ObjectComparison</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
 	<PackageTags>comparison</PackageTags>
-	<PackageReleaseNotes>From Issue #2. Change Reset functionality to use a flag to determine which value is being reseted.</PackageReleaseNotes>
+	<PackageReleaseNotes>Update nuget package info.</PackageReleaseNotes>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
 	<None Include="..\..\LICENSE">
 	  <Pack>True</Pack>
 	  <PackagePath></PackagePath>
+	</None>
+	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
 	</None>
   </ItemGroup>
 

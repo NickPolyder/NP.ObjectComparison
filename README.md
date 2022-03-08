@@ -1,21 +1,23 @@
 # NP.ObjectComparison
 [![CI Build](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CI.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CI.yml)
 [![CD Build](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CD.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CD.yml)
+![Nuget](https://img.shields.io/nuget/v/NP.ObjectComparison?color=blue&logo=nuget&style=flat)
 
 The NP.ObjectComparison library provides object difference and patching functionality through .NET API.
 
 ## Installation
 
-In order to install this package you first need to add the package source:
 
-```cmd
-dotnet nuget add source --name github "https://nuget.pkg.github.com/NickPolyder/index.json"
-```
-
-then you can install it to your project with:
+To install the package to a project:
 
 ```cmd
 dotnet add {PROJECT} package NP.ObjectComparison
+```
+
+The package source for dev streams can be added through:
+
+```cmd
+dotnet nuget add source --name github "https://nuget.pkg.github.com/NickPolyder/index.json"
 ```
 
 ## Usage
@@ -122,6 +124,7 @@ AnalyzerSettings.DefaultSettings = () => analyzerSettings;
 -  ~~Give the option to also revert a patch (is it possible?)~~
    - ~~If these 2 work we can go one step further and keep a history of DiffAnalysisResults that can be applied or get reverted ?~~
 - ~~Make a Memento object that will keep the history of the changes ?~~
+- Rename Skip to Ignore to follow general naming conventions.
 - Make the Comparison Tracker to have an index that will return the change tracking of that field like (ComparisonTracker["path.to.property"]) 
 - Make the comparison tracker to make use of the WeakReference class.
 - Make examples and samples 
