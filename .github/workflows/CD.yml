@@ -35,5 +35,3 @@ jobs:
       working-directory: ./nuget-packages
     - name: Publish Nuget
       run: dotnet nuget push "nuget-packages/*.nupkg"  --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
-    - name: Publish Symbols
-      run: dotnet nuget push "nuget-packages/*.snupkg"  --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
