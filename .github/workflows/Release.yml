@@ -25,7 +25,5 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: List sources
-      run: dotnet nuget list source
     - name: Publish Nuget
       run: dotnet nuget push "nuget-packages/*.nupkg"  --api-key ${{ secrets.NUGET_API_TOKEN }} --source "nuget.org" --skip-duplicate
