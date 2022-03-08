@@ -16,12 +16,17 @@
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<PackageTags>comparison</PackageTags>
 	<PackageReleaseNotes>Update nuget package info.</PackageReleaseNotes>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<MinClientVersion>2.12</MinClientVersion>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<IncludeSymbols>true</IncludeSymbols>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	<!--Package Validation-->
+	<EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
   <ItemGroup>

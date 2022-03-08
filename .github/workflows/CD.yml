@@ -31,4 +31,4 @@ jobs:
     - name: Add github source
       run:  dotnet nuget add source --username NickPolyder --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/NickPolyder/index.json"
     - name: Publish
-      run: dotnet nuget push "nuget-packages/*.nupkg"  --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+      run: dotnet nuget push "nuget-packages/*.*nupkg"  --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
