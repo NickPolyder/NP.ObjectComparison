@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
 	<PackageOutputPath>../../nuget-packages</PackageOutputPath>
-	<Version>0.9.8.2</Version>
+	<Version>0.9.8.3</Version>
 	<Authors>Nick Polyderopoulos</Authors>
 	<Company>Nick Polyderopoulos</Company>
 	<Product>Object Comparison</Product>
@@ -16,9 +16,8 @@
 	<RepositoryUrl>https://github.com/NickPolyder/NP.ObjectComparison</RepositoryUrl>
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<PackageTags>comparison</PackageTags>
-	<PackageReleaseNotes>Update nuget package info.</PackageReleaseNotes>
+	<PackageReleaseNotes>No changes trying to fix deterministic flags</PackageReleaseNotes>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<MinClientVersion>2.12</MinClientVersion>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<IncludeSymbols>true</IncludeSymbols>
