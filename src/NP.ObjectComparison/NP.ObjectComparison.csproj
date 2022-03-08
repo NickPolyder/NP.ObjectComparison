@@ -9,6 +9,7 @@
 	<Product>Object Comparison</Product>
 	<Description>A .net library that performs diff and patch operations on .net objects</Description>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<Copyright>Copyright (c) $([System.DateTime]::Now.Year.ToString()) Nick Polyderopoulos</Copyright>
 	<PackageProjectUrl>https://github.com/NickPolyder/NP.ObjectComparison</PackageProjectUrl>
 	<RepositoryType>git</RepositoryType>
@@ -16,8 +17,6 @@
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<PackageTags>comparison</PackageTags>
 	<PackageReleaseNotes>Update nuget package info.</PackageReleaseNotes>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<MinClientVersion>2.12</MinClientVersion>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
