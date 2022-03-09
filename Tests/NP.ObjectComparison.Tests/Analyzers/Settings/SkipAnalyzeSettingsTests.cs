@@ -22,13 +22,13 @@ namespace NP.ObjectComparison.Tests.Analyzers.Settings
 		public void Skip_MemberExpression_ShouldSkipTheProperty()
 		{
 			// Arrange
-			var sut = new SkipAnalyzeSettings();
+			var sut = new IgnoreSettings();
 
 			// Act
-			var result = sut.Skip<TestObject, string>(model => model.FirstProperty);
+			var result = sut.Ignore<TestObject, string>(model => model.FirstProperty);
 
 			// Assert
-			result.IsSkipped(typeof(TestObject).GetProperty(nameof(TestObject.FirstProperty))).ShouldBeTrue();
+			result.IsIgnored(typeof(TestObject).GetProperty(nameof(TestObject.FirstProperty))).ShouldBeTrue();
 		}
 	}
 }

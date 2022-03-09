@@ -228,10 +228,10 @@ namespace NP.ObjectComparison.Tests.Analyzers
 		public void Analyze_WhenThereAreSkippedValues_ShouldSkipTheAnalyzeOfTheValues()
 		{
 			// Arrange
-			var sut = new AnalyzerComposite<SkipTestObject>(AnalyzerBuilder<SkipTestObject>.Build().ToArray());
+			var sut = new AnalyzerComposite<IgnoreTestObject>(AnalyzerBuilder<IgnoreTestObject>.Build().ToArray());
 
-			var originalValue = _fixture.Create<SkipTestObject>();
-			var targetValue = _fixture.Create<SkipTestObject>();
+			var originalValue = _fixture.Create<IgnoreTestObject>();
+			var targetValue = _fixture.Create<IgnoreTestObject>();
 
 			// Act
 			var result = sut.Analyze(originalValue, targetValue);

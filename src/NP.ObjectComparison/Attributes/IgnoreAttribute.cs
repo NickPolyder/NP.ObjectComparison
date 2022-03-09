@@ -3,10 +3,10 @@
 namespace NP.ObjectComparison.Attributes
 {
 	/// <summary>
-	/// Allows a class or a property to be skipped.
+	/// Allows a class or a property to be ignored when analyzed.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false)]
-	public class SkipAnalyzeAttribute : Attribute
+	public class IgnoreAttribute : Attribute
 	{
 
 	}

@@ -5,22 +5,22 @@ using System.Reflection;
 namespace NP.ObjectComparison.Analyzers.Settings
 {
 	/// <summary>
-	/// Extensions related to <see cref="SkipAnalyzeSettings"/>.
+	/// Extensions related to <see cref="IgnoreSettings"/>.
 	/// </summary>
-	public static class SkipAnalyzeSettingsExtensions
+	public static class IgnoreAnalyzeSettingsExtensions
 	{
 		/// <summary>
-		/// Skips the property given by the <paramref name="expression"/>.
+		/// Ignores the property given by the <paramref name="expression"/>.
 		/// </summary>
 		/// <param name="settings"></param>
 		/// <param name="expression">A <see cref="MemberExpression"/> accessing a property.</param>
 		/// <returns>Self.</returns>
-		public static SkipAnalyzeSettings Skip<TModel, TMember>(this SkipAnalyzeSettings settings, Expression<Func<TModel, TMember>> expression)
+		public static IgnoreSettings Ignore<TModel, TMember>(this IgnoreSettings settings, Expression<Func<TModel, TMember>> expression)
 		{
 			if (expression?.Body is MemberExpression memberExpression 
 			    && memberExpression.Member is PropertyInfo propertyInfo)
 			{
-				return settings.Skip(propertyInfo);
+				return settings.Ignore(propertyInfo);
 			}
 
 			throw new ArgumentException(Resources.Errors.Skip_RequiresMemberExpression, nameof(expression));
@@ -28,13 +28,13 @@ namespace NP.ObjectComparison.Analyzers.Settings
 
 
 		/// <summary>
-		/// Skips this <typeparamref name="TModel"/>.
+		/// Ignores this <typeparamref name="TModel"/>.
 		/// </summary>
 		/// <param name="settings"></param>
 		/// <returns>Self.</returns>
-		public static SkipAnalyzeSettings Skip<TModel>(this SkipAnalyzeSettings settings)
+		public static IgnoreSettings Ignore<TModel>(this IgnoreSettings settings)
 		{
-			return settings.Skip(typeof(TModel));
+			return settings.Ignore(typeof(TModel));
 		}
 	}
 }

@@ -44,6 +44,7 @@ namespace NP.ObjectComparison
 				{
 					CloneToOriginal();
 				}
+
 			}
 		}
 
@@ -64,11 +65,10 @@ namespace NP.ObjectComparison
 		/// <param name="cloneFunc">The function to clone the <typeparamref name="TObject"/>.</param>
 		public ComparisonTracker(TObject currentValue, IObjectAnalyzer<TObject> analyzer, Func<TObject, TObject> cloneFunc = null)
 		{
-			_current = currentValue;
 			_analyzer = analyzer ?? throw new ArgumentNullException(nameof(analyzer));
 			_history = new List<IComparisonHistory<TObject>>();
 			_cloneFunc = cloneFunc;
-			CloneToOriginal();
+			Current = currentValue;
 		}
 
 		/// <inheritdoc />
@@ -144,7 +144,7 @@ namespace NP.ObjectComparison
 		/// <inheritdoc />
 		public void RevertTo(IComparisonHistory<TObject> history)
 		{
-			Current = history.Get();
+			Current = CloneValue(history.Get());
 			Analyze();
 		}
 

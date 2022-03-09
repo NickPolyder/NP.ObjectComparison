@@ -22,7 +22,7 @@ namespace NP.ObjectComparison.Analyzers
 
 			var typeToAnalyze = typeof(TInstance);
 
-			if (localOptions.SkipAnalyzeSettings.IsSkipped(typeToAnalyze))
+			if (localOptions.IgnoreSettings.IsIgnored(typeToAnalyze))
 			{
 				yield break;
 			}
@@ -31,7 +31,7 @@ namespace NP.ObjectComparison.Analyzers
 			
 			foreach (var publicProperty in publicProperties)
 			{
-				if (localOptions.SkipAnalyzeSettings.IsSkipped(publicProperty))
+				if (localOptions.IgnoreSettings.IsIgnored(publicProperty))
 				{
 					continue;
 				}

@@ -19,6 +19,6 @@ namespace NP.ObjectComparison.Analyzers.Settings
 		/// <summary>
 		/// Skip analyze settings.
 		/// </summary>
-		public SkipAnalyzeSettings SkipAnalyzeSettings { get; set; } = new SkipAnalyzeSettings();
+		public IgnoreSettings IgnoreSettings { get; set; } = new IgnoreSettings();
 	}
 }

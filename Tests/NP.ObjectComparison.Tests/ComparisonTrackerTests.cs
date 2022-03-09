@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using AutoFixture;
 using NP.ObjectComparison.Exceptions;
+using NP.ObjectComparison.Results;
 using NP.ObjectComparison.Tests.Mocks;
 using Shouldly;
 using Xunit;
@@ -14,7 +15,7 @@ namespace NP.ObjectComparison.Tests
 	{
 		private readonly ITestOutputHelper _testOutputHelper;
 
-		private IFixture _fixture;
+		private readonly IFixture _fixture;
 		public ComparisonTrackerTests(ITestOutputHelper testOutputHelper)
 		{
 			_testOutputHelper = testOutputHelper;
@@ -143,6 +144,38 @@ namespace NP.ObjectComparison.Tests
 		}
 
 		[Fact]
+		public void HasChanges_WhenAutoAnalyzeIsProvided_ShouldRunAnalysis()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current);
+			sut.Current.OtherFirstProperty = _fixture.Create<string>();
+
+			// Act
+			var result = sut.HasChanges(true);
+
+			// Assert
+			result.ShouldBeTrue();
+		}
+
+		[Fact]
+		public void HasChanges_WhenPatched_ShouldDisregardTheCurrentAnalysis()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current);
+			sut.Current.OtherFirstProperty = _fixture.Create<string>();
+
+			sut.Patch();
+
+			// Act
+			var result = sut.HasChanges();
+
+			// Assert
+			result.ShouldBeFalse();
+		}
+
+		[Fact]
 		public void IsPatched_WhenItsNotAnalyzed_ShouldReturnFalse()
 		{
 			// Arrange
@@ -214,7 +247,7 @@ namespace NP.ObjectComparison.Tests
 			sut.Original.ShouldBe(sut.Current);
 			sut.IsPatched().ShouldBeTrue();
 		}
-		
+
 		[Fact]
 		public void Reset_ShouldOverrideOriginalValue()
 		{
@@ -229,6 +262,23 @@ namespace NP.ObjectComparison.Tests
 			sut.Reset();
 			// Assert
 			sut.Original.ShouldBe(sut.Current);
+		}
+
+		[Fact]
+		public void Reset_WhenToCurrentIsTrue_ShouldOverrideCurrentValue()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current)
+			{
+				Current = { OtherFirstProperty = _fixture.Create<string>() }
+			};
+
+			// Act
+			sut.Reset(true);
+
+			// Assert
+			sut.Current.ShouldBe(sut.Original);
 		}
 
 		[Fact]
@@ -266,6 +316,155 @@ namespace NP.ObjectComparison.Tests
 			ComparisonTracker<OtherTestObject> result = sut;
 			// Assert
 			result.Current.ShouldBe(sut);
+		}
+
+		[Fact]
+		public void GetCurrentAnalysis_WhenNotAnalyzed_ShouldRunTheAnalysisAndReturnTheValue()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current)
+			{
+				Current = { OtherFirstProperty = _fixture.Create<string>() }
+			};
+
+			// Act
+			var result = sut.GetCurrentAnalysis().ToArray();
+
+			// Assert
+			result.HasChanges().ShouldBe(true);
+			result.First(item => item.HasChanges).Name.ShouldBe($"{nameof(OtherTestObject.OtherFirstProperty)}");
+		}
+
+		[Fact]
+		public void GetCurrentAnalysis_WhenAnalyzed_ShouldReturnTheValue()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current)
+			{
+				Current = { OtherFirstProperty = _fixture.Create<string>() }
+			};
+
+			sut.Analyze();
+
+			// Act
+			var result = sut.GetCurrentAnalysis().ToArray();
+
+			// Assert
+			result.HasChanges().ShouldBe(true);
+			result.First(item => item.HasChanges).Name.ShouldBe($"{nameof(OtherTestObject.OtherFirstProperty)}");
+		}
+
+		[Fact]
+		public void GetHistory_WhenNoChangesHaveBeenMade_ShouldReturnTheInitialHistoryItem()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current);
+
+			// Act
+			var result = sut.GetHistory().ToArray();
+
+			// Assert
+			result.ShouldHaveSingleItem();
+			var history = result.First();
+			history.Get().ShouldBe(current);
+			history.GetDiff().ShouldBeEmpty();
+		}
+
+
+		[Fact]
+		public void GetHistory_ShouldHaveAnItemForEveryPatchCalled()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current);
+
+			sut.Current.OtherFirstProperty = _fixture.Create<string>();
+
+			sut.Patch();
+
+			sut.Current.OtherSecondProperty = _fixture.Create<int>();
+
+			sut.Patch();
+
+			// Act
+			var result = sut.GetHistory().ToArray();
+
+			// Assert
+			// 2 Patch called + 1 for the initial.
+
+			result.Length.ShouldBe(2 + 1);
+			var history = result.Last();
+			history.Get().ShouldBe(current);
+			history.GetDiff().ShouldNotBeEmpty();
+		}
+
+		[Fact]
+		public void RevertTo_ShouldReplaceCurrentWithACopyOfThatHistoryItem()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current);
+
+			sut.Current.OtherFirstProperty = _fixture.Create<string>();
+
+			sut.Patch();
+
+			sut.Current.OtherSecondProperty = _fixture.Create<int>();
+
+			sut.Patch();
+
+			sut.Current.OtherFourthProperty = _fixture.Create<AnotherTestObject>();
+
+			sut.Patch();
+
+			var historyItems = sut.GetHistory().ToArray();
+			
+			// Act
+			var randomIndex = new Random().Next(0, historyItems.Length - 2);
+			var selectedHistory = historyItems[randomIndex];
+
+			sut.RevertTo(selectedHistory);
+
+			// Assert
+			sut.Current.ShouldBe(selectedHistory.Get());
+		}
+
+		[Fact]
+		public void RevertTo_ShouldCallAnalyze()
+		{
+			// Arrange
+			var current = _fixture.Create<OtherTestObject>();
+			var sut = new ComparisonTracker<OtherTestObject>(current);
+
+			sut.Current.OtherFirstProperty = _fixture.Create<string>();
+
+			sut.Patch();
+
+			sut.Current.OtherSecondProperty = _fixture.Create<int>();
+
+			sut.Patch();
+
+			sut.Current.OtherFourthProperty = _fixture.Create<AnotherTestObject>();
+
+			sut.Patch();
+
+			var historyItems = sut.GetHistory().ToArray();
+
+			// Act
+			var randomIndex = new Random().Next(0, historyItems.Length - 2);
+			var selectedHistory = historyItems[randomIndex];
+
+			var previousAnalysis = sut.GetCurrentAnalysis();
+
+			sut.RevertTo(selectedHistory);
+
+			var result = sut.GetCurrentAnalysis();
+
+			// Assert
+			result.ShouldNotBe(previousAnalysis);
 		}
 	}
 }

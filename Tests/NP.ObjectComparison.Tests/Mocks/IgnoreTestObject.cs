@@ -3,31 +3,31 @@ using NP.ObjectComparison.Attributes;
 
 namespace NP.ObjectComparison.Tests.Mocks
 {
-	public class SkipTestObject : ICloneable, IEquatable<SkipTestObject>
+	public class IgnoreTestObject : ICloneable, IEquatable<IgnoreTestObject>
 	{
-		[SkipAnalyze]
+		[Ignore]
 		public string FirstProperty { get; set; }
 
 		public int SecondProperty { get; set; }
 
 		public DateTime ThirdProperty { get; set; }
 
-		public SkipOtherTestObject FourthProperty { get; set; }
+		public IgnoreOtherTestObject FourthProperty { get; set; }
 
 		public TestObject FifthProperty { get; set; }
 		public object Clone()
 		{
-			return new SkipTestObject
+			return new IgnoreTestObject
 			{
 				FirstProperty = FirstProperty,
 				SecondProperty = SecondProperty,
 				ThirdProperty = ThirdProperty,
-				FourthProperty = (SkipOtherTestObject)FourthProperty?.Clone(),
+				FourthProperty = (IgnoreOtherTestObject)FourthProperty?.Clone(),
 				FifthProperty = (TestObject)FifthProperty?.Clone()
 			};
 		}
 
-		public bool Equals(SkipTestObject other)
+		public bool Equals(IgnoreTestObject other)
 		{
 			if (ReferenceEquals(null, other))
 			{
@@ -59,7 +59,7 @@ namespace NP.ObjectComparison.Tests.Mocks
 				return false;
 			}
 
-			return Equals((SkipTestObject)obj);
+			return Equals((IgnoreTestObject)obj);
 		}
 
 		public override int GetHashCode()
