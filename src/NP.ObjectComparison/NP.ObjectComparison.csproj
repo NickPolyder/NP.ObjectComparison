@@ -22,10 +22,7 @@
 	<IncludeSymbols>true</IncludeSymbols>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	<EmbedUntrackedSources>true</EmbedUntrackedSources>
-	<!--Package Validation-->
-	<EnablePackageValidation Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</EnablePackageValidation>
-	<PackageReleaseNotes>
-Rename the `Skip` related functionality to `Ignore` in order to follow the general naming conventions.
+	<PackageReleaseNotes>Rename the `Skip` related functionality to `Ignore` in order to follow the general naming conventions.
 
 On `ComparisonTracker`
        - The history item that is reverted uses a copy of the item.
