@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8067
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NP.ObjectComparison.Samples.Blazor.WebAssembly", "Samples\NP.ObjectComparison.Samples.Blazor.WebAssembly\NP.ObjectComparison.Samples.Blazor.WebAssembly.csproj", "{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NP.ObjectComparison.Benchmarks", "Benchmarks\NP.ObjectComparison.Benchmarks\NP.ObjectComparison.Benchmarks.csproj", "{CFEAB396-ECC3-4C1C-8F55-1E59B4AC2358}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{18F3F420-6D2C-40D9-B00D-55A24450D6A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFEAB396-ECC3-4C1C-8F55-1E59B4AC2358}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{CFEAB396-ECC3-4C1C-8F55-1E59B4AC2358}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{CFEAB396-ECC3-4C1C-8F55-1E59B4AC2358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFEAB396-ECC3-4C1C-8F55-1E59B4AC2358}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0B567D27-2E8C-441D-81A9-B593668796C2} = {2DD38859-8E81-4D47-AD62-7662EE2AB27C}
 		{710B7D4F-BADF-4BC4-AF5A-FD2A7831E98D} = {80678F53-3236-43B3-A870-6137C8A0E871}
+		{CFEAB396-ECC3-4C1C-8F55-1E59B4AC2358} = {18F3F420-6D2C-40D9-B00D-55A24450D6A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E78184F-5695-4671-8575-1AE17832F6EE}
