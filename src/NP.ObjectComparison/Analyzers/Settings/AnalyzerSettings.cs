@@ -7,10 +7,11 @@ namespace NP.ObjectComparison.Analyzers.Settings
 	/// </summary>
 	public class AnalyzerSettings
 	{
+		private static readonly AnalyzerSettings _defaultSettings = new AnalyzerSettings();
 		/// <summary>
 		/// A factory method that is responsible to create an initial instance of <see cref="AnalyzerSettings"/>.
 		/// </summary>
-		public static Func<AnalyzerSettings> DefaultSettings { get; set; } = new Func<AnalyzerSettings>(() => new AnalyzerSettings());
+		public static Func<AnalyzerSettings> DefaultSettings { get; set; } = new Func<AnalyzerSettings>(() => _defaultSettings);
 		/// <summary>
 		/// Depth settings.
 		/// </summary>
