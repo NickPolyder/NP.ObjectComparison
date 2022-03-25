@@ -46,7 +46,7 @@ namespace NP.ObjectComparison.Analyzers.Strategies
 			Type valueType,
 			object objectInfo)
 		{
-			if (options != null)
+			if (options?.Depth != null)
 			{
 				if (options.Depth.IsAllowedDepth(propertyInfo))
 				{

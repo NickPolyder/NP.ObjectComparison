@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NP.ObjectComparison.Analyzers;
+using NP.ObjectComparison.Analyzers.Settings;
 using NP.ObjectComparison.Exceptions;
 using NP.ObjectComparison.Results;
 
@@ -54,7 +55,19 @@ namespace NP.ObjectComparison
 		/// <param name="currentValue">The current value to monitor.</param>
 		/// <param name="cloneFunc">The function to clone the <typeparamref name="TObject"/>.</param>
 		public ComparisonTracker(TObject currentValue, Func<TObject, TObject> cloneFunc = null) : this(currentValue,
-			AnalyzerBuilder<TObject>.Build().ToComposite(), cloneFunc)
+			AnalyzerSettings.DefaultSettings.Invoke(), cloneFunc)
+		{ }
+
+		/// <summary>
+		/// Constructs a Comparison Tracker with <paramref name="currentValue"/>, <paramref name="analyzerSettings"/> and optionally <paramref name="cloneFunc"/>.
+		/// </summary>
+		/// <param name="currentValue">The current value to monitor.</param>
+		/// <param name="analyzerSettings">Settings for the <see cref="AnalyzerBuilder{TInstance}.Build"/>.</param>
+		/// <param name="cloneFunc">The function to clone the <typeparamref name="TObject"/>.</param>
+		public ComparisonTracker(TObject currentValue, AnalyzerSettings analyzerSettings, Func<TObject, TObject> cloneFunc = null) 
+			: this(currentValue,
+			AnalyzerBuilder<TObject>.Build(analyzerSettings).ToComposite(),
+			cloneFunc)
 		{ }
 
 		/// <summary>

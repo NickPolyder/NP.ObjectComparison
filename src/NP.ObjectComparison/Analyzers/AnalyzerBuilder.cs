@@ -14,7 +14,7 @@ namespace NP.ObjectComparison.Analyzers
 		// We use the static field as a local cache.
 		private static PropertyInfo[] _cachedProperties;
 
-		private static IDictionary<PropertyInfo, IObjectAnalyzer<TInstance>> _propertyAnalyzers =
+		private static readonly IDictionary<PropertyInfo, IObjectAnalyzer<TInstance>> _propertyAnalyzers =
 			new Dictionary<PropertyInfo, IObjectAnalyzer<TInstance>>();
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace NP.ObjectComparison.Analyzers
 
 				if (publicProperty.PropertyType.HasInterface(Constants.DictionaryInterfaceType))
 				{
-					var analyzer = AnalyzerBuildStrategies.DictionaryBuilderStrategy.Build<TInstance>(publicProperty);
+					var analyzer = AnalyzerBuildStrategies.DictionaryBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
 					if (analyzer != null)
 					{
 						_propertyAnalyzers.Add(publicProperty, analyzer);
@@ -64,7 +64,7 @@ namespace NP.ObjectComparison.Analyzers
 
 				if (publicProperty.PropertyType.IsCollectionType())
 				{
-					var analyzer = AnalyzerBuildStrategies.ArrayBuilderStrategy.Build<TInstance>(publicProperty);
+					var analyzer = AnalyzerBuildStrategies.ArrayBuilderStrategy.Build<TInstance>(publicProperty, localOptions);
 					if (analyzer != null)
 					{
 						_propertyAnalyzers.Add(publicProperty, analyzer);
