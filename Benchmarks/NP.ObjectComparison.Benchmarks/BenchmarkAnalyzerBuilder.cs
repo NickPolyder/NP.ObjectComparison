@@ -1,12 +1,14 @@
-﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
+﻿using System.Diagnostics.CodeAnalysis;
+using BenchmarkDotNet.Attributes;
 using NP.ObjectComparison.Analyzers;
 using NP.ObjectComparison.Analyzers.Settings;
-using NP.ObjectComparison.Benchmarks;
+
+namespace NP.ObjectComparison.Benchmarks;
 
 [MemoryDiagnoser]
 [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
 [RankColumn]
+[SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
 public class BenchmarkAnalyzerBuilder
 {
 	private static readonly AnalyzerSettings _analyzerOptions;
@@ -14,7 +16,7 @@ public class BenchmarkAnalyzerBuilder
 	static BenchmarkAnalyzerBuilder()
 	{
 		_analyzerOptions =  AnalyzerSettings.DefaultSettings.Invoke()
-			?? new AnalyzerSettings();
+		                    ?? new AnalyzerSettings();
 	}
 
 	[Benchmark(Baseline = true)] // mark this is as baseline method.

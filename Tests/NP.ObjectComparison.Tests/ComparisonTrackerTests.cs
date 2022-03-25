@@ -29,7 +29,9 @@ namespace NP.ObjectComparison.Tests
 			// Arrange
 
 			// Act
-			var result = Record.Exception(() => new ComparisonTracker<OtherTestObject>(null, null, null));
+			var result = Record.Exception(() => new ComparisonTracker<OtherTestObject>(null,
+				(IObjectAnalyzer<OtherTestObject>)null, 
+				null));
 
 			// Assert
 			result.ShouldBeOfType<ArgumentNullException>().ParamName.ShouldBe("analyzer");

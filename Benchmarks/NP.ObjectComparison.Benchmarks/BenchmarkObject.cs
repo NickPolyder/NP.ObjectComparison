@@ -2,9 +2,9 @@
 
 public class BenchmarkObject :  IEquatable<BenchmarkObject>, ICloneable
 {
-	public string Id { get; set; }
+	public string? Id { get; set; }
 
-	public string Name { get; set; }
+	public string? Name { get; set; }
 
 	public int Order { get; set; }
 
@@ -56,8 +56,8 @@ public class BenchmarkObject :  IEquatable<BenchmarkObject>, ICloneable
 	{
 		return new BenchmarkObject
 		{
-			Id = (string)Id.Clone(),
-			Name = (string)Name.Clone(),
+			Id = (string?)Id?.Clone(),
+			Name = (string?)Name?.Clone(),
 			Order = Order
 		};
 	}
