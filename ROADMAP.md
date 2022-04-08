@@ -21,5 +21,3 @@
 - Make the comparison tracker to make use of the WeakReference class.
 - Make examples and samples 
 - Unit Tests
-
-

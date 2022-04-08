@@ -1,6 +1,11 @@
 ﻿# Change log
 
-### 0.9.9.1
+## 0.9.10.0
+
+Add `INotifyPropertyChanged` event registration so that it can analyze changes as they happen.
+
+
+## 0.9.9.1
 
 Performance fixes.
 
@@ -20,7 +25,7 @@ On `ComparisonTracker<>`
 
 Added a `Benchmarks` project to help with performance improvements overtime.
 
-### 0.9.9.0
+## 0.9.9.0
 
 Rename the `Skip` related functionality to `Ignore` in order to follow the general naming conventions.
 

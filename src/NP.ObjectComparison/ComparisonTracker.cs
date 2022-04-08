@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using NP.ObjectComparison.Analyzers;
 using NP.ObjectComparison.Analyzers.Settings;
@@ -12,8 +13,9 @@ namespace NP.ObjectComparison
 	/// An object that tracks changes for a specific instance of <typeparamref name="TObject"/>
 	/// </summary>
 	/// <typeparam name="TObject">The type that needs to be tracked.</typeparam>
-	public class ComparisonTracker<TObject>: IComparisonTracker<TObject>
+	public class ComparisonTracker<TObject>: IComparisonTracker<TObject>, IDisposable
 	{
+		private bool _isDisposed = false;
 		private readonly Func<TObject, TObject> _cloneFunc;
 		private readonly IObjectAnalyzer<TObject> _analyzer;
 		private TObject _original;
@@ -39,6 +41,8 @@ namespace NP.ObjectComparison
 			get => _current;
 			set
 			{
+				UnRegisterNotifyPropertyChangedEvent();
+
 				_current = value;
 
 				if (!_isOriginalSet)
@@ -46,9 +50,13 @@ namespace NP.ObjectComparison
 					CloneToOriginal();
 				}
 
+				RegisterNotifyPropertyChangedEvent();
+
 			}
 		}
 
+		#region Constructors
+		
 		/// <summary>
 		/// Constructs a Comparison Tracker with <paramref name="currentValue"/> and optionally <paramref name="cloneFunc"/>.
 		/// </summary>
@@ -82,7 +90,10 @@ namespace NP.ObjectComparison
 			_history = new List<IComparisonHistory<TObject>>();
 			_cloneFunc = cloneFunc;
 			Current = currentValue;
+			RegisterNotifyPropertyChangedEvent();
 		}
+
+		#endregion
 
 		/// <inheritdoc />
 		public IEnumerable<DiffSnapshot> GetCurrentAnalysis()
@@ -161,6 +172,8 @@ namespace NP.ObjectComparison
 			Analyze();
 		}
 
+		#region Clone
+		
 		private void CloneToOriginal()
 		{
 			_history.Add(new ComparisonHistory<TObject>(CloneCurrentValue(), Enumerable.Empty<DiffSnapshot>()));
@@ -189,6 +202,48 @@ namespace NP.ObjectComparison
 			throw new ObjectComparisonException(Resources.Errors.CannotClone);
 		}
 
+		#endregion
+
+		#region I Notify Property Changed
+
+		private void RegisterNotifyPropertyChangedEvent()
+		{
+			if (Current is INotifyPropertyChanged notifyPropertyChanged)
+			{
+				notifyPropertyChanged.PropertyChanged += NotifyPropertyChanged_PropertyChanged;
+			}
+		}
+
+		// Maybe change the name of the method to something better.
+		private void UnRegisterNotifyPropertyChangedEvent()
+		{
+			if (Current is INotifyPropertyChanged notifyPropertyChanged)
+			{
+				notifyPropertyChanged.PropertyChanged -= NotifyPropertyChanged_PropertyChanged;
+			}
+		}
+
+		private void NotifyPropertyChanged_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			Analyze();
+		}
+
+
+		#endregion
+		/// <inheritdoc />
+		public void Dispose()
+		{
+			if(_isDisposed)
+			{
+				return;
+			}
+
+			UnRegisterNotifyPropertyChangedEvent();
+			_isDisposed = true;
+		}
+
+		#region Casts
+		
 		/// <summary>
 		/// Casts to <typeparamref name="TObject" />.
 		/// </summary>
@@ -205,5 +260,7 @@ namespace NP.ObjectComparison
 		{
 			return new ComparisonTracker<TObject>(currentValue);
 		}
+
+		#endregion
 	}
 }
