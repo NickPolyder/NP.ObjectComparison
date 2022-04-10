@@ -30,7 +30,7 @@ namespace NP.ObjectComparison.Tests
 
 			// Act
 			var result = Record.Exception(() => new ComparisonTracker<OtherTestObject>(null,
-				(IObjectAnalyzer<OtherTestObject>)null, 
+				(IObjectAnalyzer<OtherTestObject>)null,
 				null));
 
 			// Assert
@@ -375,7 +375,6 @@ namespace NP.ObjectComparison.Tests
 			history.GetDiff().ShouldBeEmpty();
 		}
 
-
 		[Fact]
 		public void GetHistory_ShouldHaveAnItemForEveryPatchCalled()
 		{
@@ -423,7 +422,7 @@ namespace NP.ObjectComparison.Tests
 			sut.Patch();
 
 			var historyItems = sut.GetHistory().ToArray();
-			
+
 			// Act
 			var randomIndex = new Random().Next(0, historyItems.Length - 2);
 			var selectedHistory = historyItems[randomIndex];
@@ -467,6 +466,124 @@ namespace NP.ObjectComparison.Tests
 
 			// Assert
 			result.ShouldNotBe(previousAnalysis);
+		}
+
+		[Fact]
+		public void WhenObjectCanNotifyOnChanges_ShouldSubscribeToTheEvent()
+		{
+			// Arrange
+			var current = _fixture.Create<NotifyChangesTestObject>();
+			var sut = new ComparisonTracker<NotifyChangesTestObject>(current);
+
+			// Act
+			current.Age = _fixture.Create<int>();
+
+			// Assert
+			var analysis = sut.GetCurrentAnalysis().ToArray();
+
+			var changedValue = analysis.FirstOrDefault(item => item.Name == nameof(current.Age));
+
+			changedValue.ShouldNotBeNull();
+
+			changedValue.HasChanges.ShouldBeTrue();
+			changedValue.OriginalValue.ShouldBe(sut.Original.Age);
+			changedValue.NewValue.ShouldBe(current.Age);
+		}
+
+		[Fact]
+		public void WhenObjectCanNotifyOnChanges_AndSetANewCurrent_ShouldRemoveTheOldEventAndSubscribeToTheNewOne()
+		{
+			// Arrange
+			var current = _fixture.Create<NotifyChangesTestObject>();
+			var sut = new ComparisonTracker<NotifyChangesTestObject>(current);
+
+			// Act
+			sut.Current = _fixture.Create<NotifyChangesTestObject>();
+
+			// Assert
+
+			var previousObjInvocationList = current.GetInvocationList();
+			previousObjInvocationList.ShouldBeNull();
+
+			var invocationList = sut.Current.GetInvocationList();
+			invocationList.ShouldNotBeEmpty();
+			invocationList.Length.ShouldBe(1);
+
+			var analysis = sut.GetCurrentAnalysis().ToArray();
+
+			analysis.ShouldAllBe(item => item.HasChanges);
+		}
+
+
+		[Fact]
+		public void WhenDisposingTheTracker_ShouldRemoveEvents()
+		{
+			// Arrange
+			var current = _fixture.Create<NotifyChangesTestObject>();
+			var sut = new ComparisonTracker<NotifyChangesTestObject>(current);
+
+			// Act
+			sut.Dispose();
+
+			// Assert
+			var invocationList = current.GetInvocationList();
+			invocationList.ShouldBeNull();
+		}
+
+		[Fact]
+		public void WhenDisposingTheSecondTime_ItShouldShortCircuit()
+		{
+			// Arrange
+			var current = _fixture.Create<NotifyChangesTestObject>();
+			var sut = new ComparisonTracker<NotifyChangesTestObject>(current);
+			sut.Dispose();
+
+			// Act
+			sut.Dispose();
+
+			// Assert
+			var invocationList = current.GetInvocationList();
+			invocationList.ShouldBeNull();
+		}
+
+		[Fact]
+		public void WhenDisposed_ShouldThrowObjectDisposedException()
+		{
+			// Arrange
+			var current = _fixture.Create<NotifyChangesTestObject>();
+			var sut = new ComparisonTracker<NotifyChangesTestObject>(current);
+			sut.Dispose();
+
+			// Act
+			foreach (var action in new Action[]
+					 {
+						 () => sut.HasChanges(),
+						 () => sut.Patch(),
+						 () => sut.Analyze(),
+						 () => sut.Reset(),
+						 () => sut.IsPatched(),
+						 () => sut.GetHistory(),
+						 () => sut.GetCurrentAnalysis(),
+						 () =>
+						 {
+							 var o = sut.Original;
+						 },
+						 () =>
+						 {
+							 var c = sut.Current;
+						 },
+						 () => sut.RevertTo(sut.GetHistory().FirstOrDefault())
+
+					 })
+			{
+				// Act
+				var exception = Record.Exception(action);
+
+				// Assert
+				exception.ShouldNotBeNull();
+				exception.ShouldBeOfType<ObjectDisposedException>().ObjectName.ShouldBe(nameof(ComparisonTracker<NotifyChangesTestObject>));
+			}
+
 		}
 	}
 }
