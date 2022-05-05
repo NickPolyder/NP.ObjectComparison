@@ -12,7 +12,7 @@ public class NotifyChangesTestObject : ICloneable, IEquatable<NotifyChangesTestO
 	private int _age;
 
 	/// <inheritdoc />
-	public event PropertyChangedEventHandler? PropertyChanged;
+	public event PropertyChangedEventHandler PropertyChanged;
 
 	/// <summary>
 	/// Used only for Tests.

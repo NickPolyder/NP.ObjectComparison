@@ -2,7 +2,7 @@ $Path = [System.IO.Path]::Combine((Split-Path $PSScriptRoot),"Tests")
 
 $Configuration = 'Debug';
 
-$ExcludeByAttributes = @('Obsolete', 'GeneratedCode', 'CompilerGenerated');
+$ExcludeByAttributes = @('Obsolete', 'GeneratedCode', 'CompilerGenerated', 'ExcludeFromCodeCoverage');
 
 $ExcludeByFiles = @('**/*.generated.cs', '**/*.Designer.cs');
 

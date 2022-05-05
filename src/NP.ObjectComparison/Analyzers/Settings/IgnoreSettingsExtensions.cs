@@ -7,7 +7,7 @@ namespace NP.ObjectComparison.Analyzers.Settings
 	/// <summary>
 	/// Extensions related to <see cref="IgnoreSettings"/>.
 	/// </summary>
-	public static class IgnoreAnalyzeSettingsExtensions
+	public static class IgnoreSettingsExtensions
 	{
 		/// <summary>
 		/// Ignores the property given by the <paramref name="expression"/>.

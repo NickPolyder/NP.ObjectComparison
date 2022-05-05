@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NP.ObjectComparison.Exceptions
 {
@@ -6,6 +7,7 @@ namespace NP.ObjectComparison.Exceptions
 	/// 
 	/// </summary>
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public class ObjectComparisonException: Exception
 	{
 		/// <summary>
