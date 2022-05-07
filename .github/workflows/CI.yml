@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  HistoryPath: /home/pi/Projects/NP-ObjectComparison/History 
+
 jobs:   
   build:
     runs-on: self-hosted
@@ -27,10 +30,43 @@ jobs:
   tests:
     needs: build
     runs-on: self-hosted
+    permissions:  
+      contents: write
+      repository-projects: write
+      statuses: write
     steps:
     - name: Setup .NET 6.0
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Get Current version
+      id: get-app-version
+      run: |
+        version=$(~/powershell/pwsh ./tools/Get-Version.ps1)
+        echo '::set-output name=AppVersion::'$version
+    - name: Coverage
+      run: ~/powershell/pwsh -File ./tools/Execute-Coverage-pipeline.ps1 -HistoryPath $HistoryPath -Tag 'CI ${{ github.run_number }}, Nuget Version ${{steps.get-app-version.outputs.AppVersion}}'
+
+    - name: Upload coverage report artifact
+      uses: actions/upload-artifact@v2.2.3
+      with:
+        name: CoverageReport # Artifact name        
+        path: ./tools/coverageReport # Directory containing files to upload
+    - name: Push Coverage Badges
+      run: |
+        git config --global user.email "NP.ObjectComparison.BOT@noreply.github.com"
+        git config --global user.name "NP.ObjectComparison.BOT"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git fetch origin coverage:coverage
+        git checkout -B coverage origin/coverage
+        cp  ./tools/coverageReport/badge_linecoverage.svg ./badges/badge_linecoverage.svg
+        cp  ./tools/coverageReport/badge_branchcoverage.svg ./badges/badge_branchcoverage.svg
+        cp  $HistoryPath/*  -t ./CoverageHistory
+        git add .
+        git commit -m 'CI: ${{ github.run_number }}, Nuget Version: ${{steps.get-app-version.outputs.AppVersion}}
+         Commit Hash: ${{ github.sha }}
+         Branch: ${{ github.ref_name }}'
+        git push origin
+        git tag -f 'current_${{ github.ref_name }}'
+        git push -f --tags
+      
