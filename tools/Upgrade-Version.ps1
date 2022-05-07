@@ -26,7 +26,7 @@ $hasCustomVersion = -not [System.String]::IsNullOrWhiteSpace($CustomVersion)
 
 $projects = Get-ChildItem $Path -Filter "*.csproj" -Exclude ("*Tests*") -Recurse 
 
-$length = ($projects | measure).Count
+$length = ($projects | Measure-Object).Count
 
 if($length -le 0)
 {

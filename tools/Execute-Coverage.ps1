@@ -1,16 +1,49 @@
+<#
+.SYNOPSIS
+A tool that executes the code coverage tools for the projects
+
+.PARAMETER IsPipeline
+A switch that determines if the script is being called from a pipeline.
+
+.PARAMETER Tag
+A Tag value for the Report Generator
+
+.PARAMETER HistoryPath
+The History Path for the Report Generator
+
+.NOTES
+
+Uses: https://github.com/coverlet-coverage/coverlet and  https://github.com/danielpalme/ReportGenerator
+#>
+param(
+[Parameter(Mandatory=$false)]
+[switch] $IsPipeline,
+[Parameter(Mandatory=$false)]
+[string] $Tag,
+[Parameter(Mandatory=$false)]
+[string] $HistoryPath
+)
 $Path = [System.IO.Path]::Combine((Split-Path $PSScriptRoot),"Tests")
 
 $Configuration = 'Debug';
 
+$separator = [System.IO.Path]::DirectorySeparatorChar;
 $ExcludeByAttributes = @('Obsolete', 'GeneratedCode', 'CompilerGenerated', 'ExcludeFromCodeCoverage');
 
 $ExcludeByFiles = @('**/*.generated.cs', '**/*.Designer.cs');
 
-$regexConfiguration = '^*.\\bin\\'+$Configuration+'*.';
+$separatorRegex = $separator;
+
+if([System.Environment]::OSVersion.Platform -eq 'Win32NT')
+{
+   $separatorRegex =  $separator + $separator;
+}
+
+$regexConfiguration = '^*.' + $separatorRegex + 'bin' + $separatorRegex + $Configuration + '*.';
 
 $testProjects = (Get-ChildItem $Path -Include *Tests.csproj -Recurse -Force);
 
-$length = ($testProjects | measure).Count
+$length = ($testProjects | Measure-Object).Count
 $activityName = "Run coverage";
 
 if($length -le 0)
@@ -19,10 +52,10 @@ if($length -le 0)
     return;
 }
 
-$coverletCoveragePath = $PSScriptRoot + '\coverage\';
-$coverageLogFile = $PSScriptRoot + '\coverage.log'
-$reportGeneratorResult = $PSScriptRoot + '\cover\';
-$testResultsDirectory = $PSScriptRoot + '\test-results';
+$coverletCoveragePath = $PSScriptRoot + $separator + 'coverage' + $separator;
+$coverageLogFile = $PSScriptRoot  + $separator + 'coverage.log'
+$reportGeneratorResult = $PSScriptRoot + $separator + 'coverageReport' + $separator;
+$testResultsDirectory = $PSScriptRoot + $separator + 'unitTestResults';
 
 if(Test-Path $coverletCoveragePath)
 {
@@ -56,9 +89,9 @@ for($index = 0; $index -lt $length; $index++)
 	$dllPath = (Get-ChildItem $project.Directory.FullName -Include $dllName -Recurse -Force `
     | Where-Object { $_.Directory.FullName -Match $regexConfiguration } `
     | Where-Object { $_.Directory.FullName -NotMatch 'ref' } `
-    | Select -First 1).FullName;
+    | Select-Object -First 1).FullName;
              
-    if($dllPath -ne $null -And -Not (Test-Path $dllPath))
+    if($null -ne $dllPath -And -Not (Test-Path $dllPath))
     {
         Write-Output ''
         Write-Warning 'Cannot find dll for:' $project.Name
@@ -92,11 +125,16 @@ for($index = 0; $index -lt $length; $index++)
 	[void]$commandBuilder.Append(' --format cobertura ');
 	
     $command = $commandBuilder.ToString();
-    
-    Invoke-Expression $command | Out-File $coverageLogFile -Append
+    if($IsPipeline -eq $true)
+    {
+        Invoke-Expression $command
+    }else{
+        Invoke-Expression $command | Out-File $coverageLogFile -Append
+    }
 
     [void]$commandBuilder.Clear();
 }
+
 
 if(Test-Path $reportGeneratorResult)
 {
@@ -104,8 +142,16 @@ if(Test-Path $reportGeneratorResult)
 }
 
 $reportsArg = [string]::Join(";", $coverageFiles)
+    
+$sourcePath = [System.IO.Path]::Combine((Split-Path $PSScriptRoot),"src")
 
-& reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult | Out-File $coverageLogFile -Append
-   
-$startIndex = $reportGeneratorResult + 'index.htm';
-& start $startIndex
+if($IsPipeline -eq $true)
+{
+    & reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult -reporttypes:'HtmlInline;Cobertura' -sourcedirs:$sourcePath -historydir:$HistoryPath -tag:$Tag
+}else{
+
+    & reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult `
+     -reporttypes:'HtmlInline;Cobertura' -sourcedirs:$sourcePath -historydir:$HistoryPath -tag:$Tag | Out-File $coverageLogFile -Append
+	$startIndex = $reportGeneratorResult + 'index.htm';
+	& Start-Process $startIndex
+}
