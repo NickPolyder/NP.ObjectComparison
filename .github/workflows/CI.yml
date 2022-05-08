@@ -48,10 +48,12 @@ jobs:
       run: ~/powershell/pwsh -File ./tools/Execute-Coverage-pipeline.ps1 -HistoryPath $HistoryPath -Tag 'CI ${{ github.run_number }}, Nuget Version ${{steps.get-app-version.outputs.AppVersion}}'
 
     - name: Upload coverage report artifact
-      uses: actions/upload-artifact@v2.2.3
+      uses: actions/upload-artifact@v3
       with:
         name: CoverageReport # Artifact name        
         path: ./tools/coverageReport # Directory containing files to upload
+        retention-days: 15
+        
     - name: Push Coverage Badges
       run: |
         git config --global user.email "NP.ObjectComparison.BOT@noreply.github.com"
@@ -67,6 +69,6 @@ jobs:
          Commit Hash: ${{ github.sha }}
          Branch: ${{ github.ref_name }}'
         git push origin
-        git tag -f 'current_${{ github.ref_name }}'
+        git tag -f 'coverage_${{ github.ref_name }}'
         git push -f --tags
       
