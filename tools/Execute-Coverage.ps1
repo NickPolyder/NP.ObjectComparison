@@ -147,7 +147,7 @@ $sourcePath = [System.IO.Path]::Combine((Split-Path $PSScriptRoot),"src")
 
 if($IsPipeline -eq $true)
 {
-    & reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult -sourcedirs:$sourcePath -reporttypes:'Html_Dark;Badges' -historydir:$HistoryPath -tag:$Tag
+    & reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult -sourcedirs:$sourcePath -reporttypes:'Badges' -historydir:$HistoryPath -tag:$Tag
 }else{
 
     & reportgenerator -reports:$reportsArg -targetdir:$reportGeneratorResult `

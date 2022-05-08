@@ -64,4 +64,5 @@ jobs:
         git push origin
         git tag -f 'coverage_${{ github.ref_name }}'
         git push -f --tags
+      continue-on-error: true
       
