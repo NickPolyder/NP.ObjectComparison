@@ -1,8 +1,12 @@
 # NP.ObjectComparison
+
 [![CI Build](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CI.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CI.yml)
 [![CD Build](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CD.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/CD.yml)
 [![Release](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/Release.yml/badge.svg)](https://github.com/NickPolyder/NP.ObjectComparison/actions/workflows/Release.yml)
 [![Nuget](https://img.shields.io/nuget/v/NP.ObjectComparison?color=blue&logo=nuget&style=flat)](https://www.nuget.org/packages/NP.ObjectComparison/)
+
+[![Line Coverage](https://raw.githubusercontent.com/NickPolyder/NP.ObjectComparison/coverage_main/badges/badge_linecoverage.svg)](https://github.com/NickPolyder/NP.ObjectComparison/releases/tag/coverage_main)
+[![Branch Coverage](https://raw.githubusercontent.com/NickPolyder/NP.ObjectComparison/coverage_main/badges/badge_branchcoverage.svg)](https://github.com/NickPolyder/NP.ObjectComparison/releases/tag/coverage_main)
 
 The NP.ObjectComparison library provides object difference and patching functionality through .NET API.
 
